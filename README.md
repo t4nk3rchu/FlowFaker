@@ -1,6 +1,6 @@
 # Data Faker Flow Launcher Plugin
 
-Generate realistic test data directly from Flow Launcher using the Faker library. Quickly produce names, dates, finance details, internet data, locations, lorem text, and phone numbers with localized output, copy options, and command validation.
+Generate realistic test data directly from Flow Launcher using the Faker python library (with a little tweak to the Vietnamese locale to support it better). Quickly produce names, dates, finance details, internet data, locations, lorem text, and phone numbers with localized output, copy options, and command validation.
 
 ## Description
 - Purpose: Accelerate development and testing by generating fake data from your launcher without context switching.
@@ -15,7 +15,8 @@ Generate realistic test data directly from Flow Launcher using the Faker library
 - Dependencies: `faker`, `pyflowlauncher`, `pyperclip` (bundled into `lib` via CI packaging).
 
 ## Installation
-- Download `Flow.Launcher.Plugin.DataFaker.zip` from Releases and import into Flow Launcher, or place the directory in `FlowLauncher\Plugins`.
+- Download `Flow.Launcher.Plugin.DataFaker.zip` from Releases
+- Extract pasted the unzip folder to the directory in `FlowLauncher\Plugins`.
 - Ensure Flow Launcher 2.x is installed.
 
 ## Configuration
