@@ -1,12 +1,7 @@
 {
-  "ID": "a6f2b0a6-513e-4078-8116-f33333333333",
-  "ActionKeyword": "faker",
+  "ID": "com.t4nk3rchu.datafaker",
   "Name": "Data Faker",
-  "Description": "A plugin to generate fake data using the Faker library.",
-  "Author": "T4nk3rChu",
-  "Version": "1.0.0",
-  "Language": "python",
-  "Website": "https://github.com/T4nk3rChu/data-faker",
-  "IcoPath": "Images\\app.svg",
-  "ExecuteFileName": "main.py"
+  "Description": "Generate realistic test data from Flow Launcher using Faker.",
+  "Author": "t4nk3rchu",
+  "Version": "1.1.0"
 }
