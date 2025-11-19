@@ -15,7 +15,8 @@ Generate realistic test data directly from Flow Launcher using the Faker library
 - Dependencies: `faker`, `pyflowlauncher`, `pyperclip`, `Pillow` (bundled into `lib` via packaging).
 
 ## Installation
-- Download `Flow.Launcher.Plugin.DataFaker.zip` from Releases and import into Flow Launcher, or place the directory in `FlowLauncher\Plugins`.
+- Download `Flow.Launcher.Plugin.DataFaker.zip` from Releases
+- Extract pasted the unzip folder to the directory in `FlowLauncher\Plugins`.
 - Ensure Flow Launcher 2.x is installed.
 
 ## Configuration
