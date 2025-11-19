@@ -12,6 +12,9 @@ def display_name(fake, options: dict) -> str:
 def domain_name(fake, options: dict) -> str:
     return fake.domain_name()
 
+def url(fake, options: dict) -> str:
+    return fake.url()
+
 def email(fake, options: dict) -> str:
     first = options.get("first")
     last = options.get("last")
@@ -41,7 +44,7 @@ def password(fake, options: dict) -> str:
     return fake.password(length=length)
 
 def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype.lower()
+    m = (subtype or "").lower()
     if m == "displayname":
         return display_name(fake, options)
     if m == "domainname":
@@ -56,4 +59,6 @@ def handle(subtype: str, fake, options: dict) -> str:
         return username(fake, options)
     if m == "password":
         return password(fake, options)
-    return fake.url()
+    if m == "url":
+        return url(fake, options)
+    raise ValueError(f"Unknown internet subtype: {subtype}")

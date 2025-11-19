@@ -91,55 +91,19 @@ def orderedName(fake, options: dict) -> str:
     return " ".join(ordered)
 
 def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
-    if m == "fullName":
+    m = (subtype or "").lower()
+    if m == "fullname":
         return fullName(fake, options)
-    if m == "firstName":
+    if m == "firstname":
         return firstName(fake, options)
-    if m == "lastName":
+    if m == "lastname":
         return lastName(fake, options)
-    if m == "middleName":
+    if m == "middlename":
         return middleName(fake, options)
-    if m == "jobTitle":
+    if m == "jobtitle":
         return jobTitle(fake, options)
     if m == "bio":
         return bio(fake, options)
-    if m == "orderedName":
+    if m == "orderedname":
         return orderedName(fake, options)
-    return fake.name()
-
-def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
-    if m == "fullName":
-        return fullName(fake, options)
-    if m == "firstName":
-        return firstName(fake, options)
-    if m == "lastName":
-        return lastName(fake, options)
-    if m == "middleName":
-        return middleName(fake, options)
-    if m == "jobTitle":
-        return jobTitle(fake, options)
-    if m == "bio":
-        return bio(fake, options)
-    if m == "orderedName":
-        return orderedName(fake, options)
-    return fake.name()
-
-def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
-    if m == "fullName":
-        return fullName(fake, options)
-    if m == "firstName":
-        return firstName(fake, options)
-    if m == "lastName":
-        return lastName(fake, options)
-    if m == "middleName":
-        return middleName(fake, options)
-    if m == "jobTitle":
-        return jobTitle(fake, options)
-    if m == "bio":
-        return bio(fake, options)
-    if m == "orderedName":
-        return orderedName(fake, options)
-    return fake.name()
+    raise ValueError(f"Unknown person subtype: {subtype}")

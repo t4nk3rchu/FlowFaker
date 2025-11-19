@@ -26,14 +26,14 @@ def between(fake, options: dict) -> str:
     return str(fake.date_between(start_date=start, end_date=end))
 
 def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
+    m = (subtype or "").lower()
     if m == "anytime":
         return anytime(fake, options)
     if m == "between":
         return between(fake, options)
     if m in {"birthdate", "birtdate"}:
         return birthdate(fake, options)
-    return str(fake.date())
+    raise ValueError(f"Unknown date subtype: {subtype}")
 
 def birthdate(fake, options: dict) -> str:
     mode = options.get("mode", "age")

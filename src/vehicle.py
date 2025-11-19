@@ -17,9 +17,9 @@ def vin(fake, options: dict) -> str:
     return "".join(pyrandom.choice(charset) for _ in range(17))
 
 def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
+    m = (subtype or "").lower()
     if m == "license":
         return license(fake, options)
     if m == "vin":
         return vin(fake, options)
-    return vin(fake, options)
+    raise ValueError(f"Unknown vehicle subtype: {subtype}")

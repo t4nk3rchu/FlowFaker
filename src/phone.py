@@ -5,13 +5,7 @@ def number(fake, options: dict) -> str:
     return fake.phone_number()
 
 def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
+    m = (subtype or "").lower()
     if m == "number":
         return number(fake, options)
-    return fake.msisdn()
-
-def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
-    if m == "number":
-        return number(fake, options)
-    return fake.phone_number()
+    raise ValueError(f"Unknown phone subtype: {subtype}")

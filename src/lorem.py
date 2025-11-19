@@ -15,7 +15,7 @@ def paragraph(fake, options: dict) -> str:
     return fake.paragraph(nb_sentences=length)
 
 def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
+    m = (subtype or "").lower()
     if m == "words":
         return words(fake, options)
     if m == "slug":
@@ -24,4 +24,4 @@ def handle(subtype: str, fake, options: dict) -> str:
         return sentence(fake, options)
     if m == "paragraph":
         return paragraph(fake, options)
-    return fake.text()
+    raise ValueError(f"Unknown lorem subtype: {subtype}")

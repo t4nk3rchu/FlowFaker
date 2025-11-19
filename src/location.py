@@ -8,51 +8,11 @@ def city(fake, options: dict) -> str:
     return fake.city()
 
 def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
-    if m == "streetAddress":
+    m = (subtype or "").lower()
+    if m == "streetaddress":
         return streetAddress(fake, options)
     if m == "state":
         return state(fake, options)
     if m == "city":
         return city(fake, options)
-    return fake.address()
-
-def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
-    if m == "streetAddress":
-        return streetAddress(fake, options)
-    if m == "state":
-        return state(fake, options)
-    if m == "city":
-        return city(fake, options)
-    return fake.address()
-
-def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
-    if m == "streetAddress":
-        return streetAddress(fake, options)
-    if m == "state":
-        return state(fake, options)
-    if m == "city":
-        return city(fake, options)
-    return fake.address()
-
-def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
-    if m == "streetAddress":
-        return streetAddress(fake, options)
-    if m == "state":
-        return state(fake, options)
-    if m == "city":
-        return city(fake, options)
-    return fake.address()
-
-def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
-    if m == "streetAddress":
-        return streetAddress(fake, options)
-    if m == "state":
-        return state(fake, options)
-    if m == "city":
-        return city(fake, options)
-    return fake.address()
+    raise ValueError(f"Unknown location subtype: {subtype}")

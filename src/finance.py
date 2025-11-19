@@ -15,7 +15,7 @@ def creditCardNumber(fake, options: dict) -> str:
     return fake.credit_card_number()
 
 def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype.lower()
+    m = (subtype or "").lower()
     if m == "accountname":
         return accountName(fake, options)
     if m == "accountnumber":
@@ -24,16 +24,4 @@ def handle(subtype: str, fake, options: dict) -> str:
         return creditCardCVV(fake, options)
     if m == "creditcardnumber":
         return creditCardNumber(fake, options)
-    return fake.currency_code()
-
-def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype
-    if m == "accountName":
-        return accountName(fake, options)
-    if m == "accountNumber":
-        return accountNumber(fake, options)
-    if m == "creditCardCVV":
-        return creditCardCVV(fake, options)
-    if m == "creditCardNumber":
-        return creditCardNumber(fake, options)
-    return fake.currency_code()
+    raise ValueError(f"Unknown finance subtype: {subtype}")

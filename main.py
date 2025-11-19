@@ -52,6 +52,7 @@ SUGGESTION_CACHE: dict[str, list[str]] = {
         "faker internet ipv6",
         "faker internet username first:{firstName} last:{lastName}",
         "faker internet password length:{n}",
+        "faker internet url",
     ],
     "location": [
         "faker location streetAddress",
@@ -122,6 +123,7 @@ COMMAND_DESCRIPTIONS: dict[str, str] = {
     "faker internet ipv6": "IPv6 address",
     "faker internet username first:{firstName} last:{lastName}": "Username",
     "faker internet password length:{n}": "Password",
+    "faker internet url": "URL",
 
     "faker location streetAddress": "Street address",
     "faker location state": "State name",

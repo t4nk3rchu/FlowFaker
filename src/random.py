@@ -72,7 +72,7 @@ def image(fake, options: dict) -> str:
     return path
 
 def handle(subtype: str, fake, options: dict) -> str:
-    m = subtype.lower()
+    m = (subtype or "").lower()
     if m == "uuid4":
         return uuid4(fake, options)
     if m == "ean13":
@@ -83,4 +83,4 @@ def handle(subtype: str, fake, options: dict) -> str:
         return imageUrl(fake, options)
     if m == "image":
         return image(fake, options)
-    return uuid4(fake, options)
+    raise ValueError(f"Unknown random subtype: {subtype}")
