@@ -1,6 +1,5 @@
 {
-  "ID": "a6f2b0a6-513e-4078-8116-f33333333333",
-  "ActionKeyword": "faker",
+  "ID": "com.t4nk3rchu.datafaker",
   "Name": "Data Faker",
   "Description": "Generate realistic test data from Flow Launcher using Faker.",
   "Author": "t4nk3rchu",
