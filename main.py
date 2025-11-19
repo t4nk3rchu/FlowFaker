@@ -11,7 +11,7 @@ import pyperclip
 from pyflowlauncher import api as FlowApi
 import time
 import json
-from src import internet, finance, person, date, location, lorem, phone
+from src import internet, finance, person, date, location, lorem, phone, random, vehicle
 from src.i18n import t
 from src.locale_support import get_default_locale, to_lang, normalize
 
@@ -27,6 +27,8 @@ SUGGESTION_CACHE: dict[str, list[str]] = {
         "location",
         "lorem",
         "person",
+        "random",
+        "vehicle",
         "phone",
     ],
     "date": [
@@ -73,6 +75,17 @@ SUGGESTION_CACHE: dict[str, list[str]] = {
         "faker person orderedName last first lang:{language}",
         "faker person orderedName last middle first lang:{language}",
     ],
+    "random": [
+        "faker random uuid4",
+        "faker random ean13",
+        "faker random ean8",
+        "faker random imageUrl width:{n} height:{n}",
+        "faker random image width:{n} height:{n}",
+    ],
+    "vehicle": [
+        "faker vehicle license",
+        "faker vehicle vin",
+    ],
     "phone": [
         "faker phone number lang:{lang}",
     ],
@@ -85,6 +98,8 @@ CATEGORY_DESCRIPTIONS: dict[str, str] = {
     "location": "Generate street addresses, states, cities",
     "lorem": "Generate words, slugs, sentences, paragraphs",
     "person": "Generate names, job titles, bios",
+    "random": "Generate UUIDs, EANs, images, URLs",
+    "vehicle": "Generate license plates and VINs",
     "phone": "Generate phone numbers and IMEIs",
 }
 
@@ -125,6 +140,15 @@ COMMAND_DESCRIPTIONS: dict[str, str] = {
     "faker person orderedName first last": "Ordered: lastName firstName",
     "faker person orderedName last first lang:{language}": "Ordered with language",
     "faker person orderedName last middle first lang:{language}": "Ordered with middle and language",
+
+    "faker random uuid4": "UUID v4",
+    "faker random ean13": "EAN-13 barcode",
+    "faker random ean8": "EAN-8 barcode",
+    "faker random imageUrl width:{n} height:{n}": "Placeholder image URL",
+    "faker random image width:{n} height:{n}": "Generated image path",
+
+    "faker vehicle license": "Vehicle license plate",
+    "faker vehicle vin": "Vehicle VIN",
 
     "faker phone number lang:{language}": "Phone number",
 }
@@ -299,6 +323,10 @@ def query(query: str) -> ResultResponse:
                 return location.handle(subtype, fake, opts)
             if category == "lorem":
                 return lorem.handle(subtype, fake, opts)
+            if category == "random":
+                return random.handle(subtype, fake, opts)
+            if category == "vehicle":
+                return vehicle.handle(subtype, fake, opts)
             if category == "phone":
                 return phone.handle(subtype, fake, opts)
             return str(getattr(fake, category)())
@@ -309,11 +337,22 @@ def query(query: str) -> ResultResponse:
     for _ in range(10):
         values = [generate_one() for __ in range(max(1, repeat))]
         data = format_values(values, use_newline)
+        action = None
+        if len(values) <= 1:
+            single = values[0] if values else ""
+            action = {"method": "copy_to_clipboard", "parameters": [single]}
+        else:
+            action = {"method": "copy_to_clipboard", "parameters": [", ".join(values)]}
+        preview = None
+        if category == "random" and subtype.lower() == "image" and len(values) == 1 and values[0] and not str(values[0]).startswith("Error:"):
+            preview = {"PreviewImagePath": values[0], "Description": "Generated Image", "IsMedia": True, "PreviewDeligate": None}
         r = Result(
             Title=data,
             SubTitle=t(lang, "copy_options"),
             IcoPath="Images\\app.svg",
             ContextData=json.dumps({"values": values}),
+            JsonRPCAction=action,
+            Preview=preview,
         )
         results.append(r)
     return send_results(results)

@@ -1,18 +1,18 @@
 # Data Faker Flow Launcher Plugin
 
-Generate realistic test data directly from Flow Launcher using the Faker library. Quickly produce names, dates, finance details, internet data, locations, lorem text, and phone numbers with localized output, copy options, and command validation.
+Generate realistic test data directly from Flow Launcher using the Faker library (with a little tweak made specifically for Vietnamese locale). Quickly produce names, dates, finance details, internet data, locations, lorem text, phone numbers, random values (UUID/EAN/images), and vehicle identifiers with localized output, copy options, and command validation.
 
 ## Description
 - Purpose: Accelerate development and testing by generating fake data from your launcher without context switching.
 - Core Functionality: Category-based commands with options; returns multiple results; supports locale override and copy formats.
 - Key Features:
-  - Rich command set: person, date, finance, internet, location, lorem, phone
+  - Rich command set: person, date, finance, internet, location, lorem, phone, random, vehicle
   - Locale support via `lang:{locale}` (e.g., `vi_VN`, `en_US`)
   - Better support for Vietnamese locale
   - Validation prevents incomplete commands from showing results
   - Copy options: newline, comma, space, JSON
 - Supported Platforms: Flow Launcher 2.x on Windows; runtime built on Python 3.11.
-- Dependencies: `faker`, `pyflowlauncher`, `pyperclip` (bundled into `lib` via CI packaging).
+- Dependencies: `faker`, `pyflowlauncher`, `pyperclip`, `Pillow` (bundled into `lib` via packaging).
 
 ## Installation
 - Download `Flow.Launcher.Plugin.DataFaker.zip` from Releases and import into Flow Launcher, or place the directory in `FlowLauncher\Plugins`.
@@ -28,6 +28,9 @@ Generate realistic test data directly from Flow Launcher using the Faker library
 - `faker date anytime`
 - `faker date between from:2002-01-01 to:2002-02-01`
 - `faker internet email first:Jeanne last:Doe`
+- `faker random imageUrl width:320 height:240`
+- `faker random uuid4`
+- `faker vehicle vin`
 - `faker person orderedName last middle first lang:vi_VN`
 - `faker lorem sentence length:8 repeat:3 newline`
 
@@ -112,6 +115,38 @@ Generate realistic test data directly from Flow Launcher using the Faker library
   - Description: Password of given length
   - Optional: `length` (default 12)
 
+### random
+- `faker random uuid4`
+  - Description: UUID version 4
+  - Output: Lowercase RFC4122 UUID string
+
+- `faker random ean13`
+  - Description: EAN‑13 barcode
+  - Output: 13‑digit numeric string with valid checksum
+
+- `faker random ean8`
+  - Description: EAN‑8 barcode
+  - Output: 8‑digit numeric string with valid checksum
+
+- `faker random imageUrl width:{n} height:{n}`
+  - Description: URL to a placeholder image
+  - Optional: `width`, `height` (random 64–512 if omitted)
+  - Output: URL like `https://picsum.photos/{width}/{height}`
+
+- `faker random image width:{n} height:{n}`
+  - Description: Generates a local PNG and shows it in preview
+  - Optional: `width`, `height` (random 64–512 if omitted)
+  - Output: Absolute file path to the PNG
+
+### vehicle
+- `faker vehicle license`
+  - Description: Vehicle license plate
+  - Output: Realistic plate string (provider or fallback pattern)
+
+- `faker vehicle vin`
+  - Description: Vehicle Identification Number
+  - Output: 17‑character VIN
+
 ### location
 - `faker location streetAddress`
 - `faker location state`
@@ -181,6 +216,7 @@ Generate realistic test data directly from Flow Launcher using the Faker library
 - Placeholders like `{n}` and `{language}` in suggestions are templates; replace them with real values.
 - `date between` accepts ISO dates and relative tokens. Use `today` or `YYYY-MM-DD`.
 - `orderedName` ignores `lang:{language}` placeholders; uses default locale when invalid.
+- For `faker random image`, if you see `Error: Pillow (PIL) is not installed`, reload the plugin. The plugin bundles Pillow for Python 3.11 under `lib/PIL`.
 
 ## Development
 - Runtime path setup: `main.py` includes `lib` so dependencies work without user pip install.
