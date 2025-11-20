@@ -4,7 +4,7 @@
   "Name": "Data Faker",
   "Description": "Generate realistic test data from Flow Launcher using Faker.",
   "Author": "t4nk3rchu",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Language": "python",
   "Website": "https://github.com/T4nk3rChu/data-faker",
   "IcoPath": "Images\\app.svg",

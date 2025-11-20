@@ -1,3 +1,17 @@
+# Data Faker Plugin v1.1.1
+
+## Release Title
+Data Faker v1.1.1 — Rename orderedName to name & Vietnamese locale updates
+
+## Changes
+- **Renamed `orderedName` to `name`**: The `orderedName` command has been renamed to `name` for brevity. The functionality remains the same, supporting ordered name generation (e.g., `faker person name first last`).
+- **Vietnamese Locale Updates**:
+  - Added "Chử" to the list of last names.
+  - Removed "Bác" from female prefixes.
+
+## Breaking Changes
+- The `orderedName` command is no longer available. Users must use `name` instead.
+
 # Data Faker Plugin v1.1.0
 
 ## Release Title
