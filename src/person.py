@@ -54,11 +54,11 @@ def jobTitle(fake, options: dict) -> str:
 def bio(fake, options: dict) -> str:
     return fake.text(max_nb_chars=160)
 
-def orderedName(fake, options: dict) -> str:
+def name(fake, options: dict) -> str:
     raw_tokens = options.get("_ordered_tokens", [])
     positional = [t.lower() for t in raw_tokens if t and ":" not in t][:3]
     if len(positional) < 2 or not all(t in {"first", "last", "middle"} for t in positional):
-        return "Error: orderedName requires two tokens: first last"
+        return "Error: name requires two tokens: first last"
     lang = options.get("lang")
     local_fake = fake
     if lang and "{" not in lang and "}" not in lang:
@@ -104,6 +104,6 @@ def handle(subtype: str, fake, options: dict) -> str:
         return jobTitle(fake, options)
     if m == "bio":
         return bio(fake, options)
-    if m == "orderedname":
-        return orderedName(fake, options)
+    if m == "name":
+        return name(fake, options)
     raise ValueError(f"Unknown person subtype: {subtype}")

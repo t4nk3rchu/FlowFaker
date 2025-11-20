@@ -72,9 +72,9 @@ SUGGESTION_CACHE: dict[str, list[str]] = {
         "faker person middleName",
         "faker person jobTitle",
         "faker person bio",
-        "faker person orderedName first last",
-        "faker person orderedName last first lang:{language}",
-        "faker person orderedName last middle first lang:{language}",
+        "faker person name first last",
+        "faker person name last first lang:{language}",
+        "faker person name last middle first lang:{language}",
     ],
     "random": [
         "faker random uuid4",
@@ -139,9 +139,9 @@ COMMAND_DESCRIPTIONS: dict[str, str] = {
     "faker person lastName sex:male|female": "Last name",
     "faker person jobTitle": "Job title",
     "faker person bio": "Short bio",
-    "faker person orderedName first last": "Ordered: lastName firstName",
-    "faker person orderedName last first lang:{language}": "Ordered with language",
-    "faker person orderedName last middle first lang:{language}": "Ordered with middle and language",
+    "faker person name first last": "Ordered name (e.g. first last)",
+    "faker person name last first lang:{language}": "Ordered with language",
+    "faker person name last middle first lang:{language}": "Ordered with middle and language",
 
     "faker random uuid4": "UUID v4",
     "faker random ean13": "EAN-13 barcode",
@@ -200,10 +200,10 @@ def is_command_complete_and_valid(category: str, subtype: str, opts: dict, raw_q
             if mode not in {"age", "year"}:
                 return False
             return bool(opts.get("min")) and bool(opts.get("max"))
-    if category == "person" and subtype == "orderedName":
+    if category == "person" and subtype == "name":
         parts = raw_query.split()
         try:
-            idx = parts.index("orderedName")
+            idx = parts.index("name")
         except ValueError:
             return False
         after = [p for p in parts[idx+1:] if ":" not in p]
@@ -291,7 +291,7 @@ def query(query: str) -> ResultResponse:
         typed_prefix = f"faker {category}"
         return send_results(suggestion_results_for_subtypes(lang, category, typed_prefix))
     opts = parse_options(option_tokens)
-    if category == "person" and subtype == "orderedName":
+    if category == "person" and subtype == "name":
         opts["_ordered_tokens"] = option_tokens
     override_locale = normalize(opts.get("lang", "")) if "lang" in opts else None
     repeat = int(opts.get("repeat", "1")) if opts.get("repeat") else 1

@@ -32,7 +32,7 @@ Generate realistic test data directly from Flow Launcher using the Faker library
 - `faker random imageUrl width:320 height:240`
 - `faker random uuid4`
 - `faker vehicle vin`
-- `faker person orderedName last middle first lang:vi_VN`
+- `faker person name last middle first lang:vi_VN`
 - `faker lorem sentence length:8 repeat:3 newline`
 
 ## Command Reference
@@ -189,17 +189,17 @@ Generate realistic test data directly from Flow Launcher using the Faker library
 - `faker person bio`
   - Description: Short bio text
 
-- `faker person orderedName first last`
+- `faker person name first last`
   - Description: Outputs `lastName firstName` in the current locale
   - Required: `first last` tokens
-  - Example: `faker person orderedName first last`
+  - Example: `faker person name first last`
 
-- `faker person orderedName last first lang:{language}`
+- `faker person name last first lang:{language}`
   - Description: Outputs `lastName firstName` in specified locale; falls back when invalid
   - Required: `last first` tokens
   - Optional: `lang:{locale}` (e.g., `vi_VN`)
 
-- `faker person orderedName last middle first lang:{language}`
+- `faker person name last middle first lang:{language}`
   - Description: Outputs ordered triplet using `last`, `middle`, `first` tokens
   - Required: Three tokens composed of `first|middle|last`
   - Optional: `lang:{locale}`
@@ -216,7 +216,7 @@ Generate realistic test data directly from Flow Launcher using the Faker library
 - Incomplete commands show suggestions, not results. Provide all required tokens/options.
 - Placeholders like `{n}` and `{language}` in suggestions are templates; replace them with real values.
 - `date between` accepts ISO dates and relative tokens. Use `today` or `YYYY-MM-DD`.
-- `orderedName` ignores `lang:{language}` placeholders; uses default locale when invalid.
+- `name` ignores `lang:{language}` placeholders; uses default locale when invalid.
 - For `faker random image`, if you see `Error: Pillow (PIL) is not installed`, reload the plugin. The plugin bundles Pillow for Python 3.11 under `lib/PIL`.
 
 ## Development

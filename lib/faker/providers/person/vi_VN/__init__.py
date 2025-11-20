@@ -334,12 +334,13 @@ class Provider(PersonProvider):
         'Từ',
         'Diệp',
         'Nông',
+        'Chử'
     )
 
     # Typically, Vietnamese will be addressed with their given name and a prefix
     # https://en.wikipedia.org/wiki/Vietnamese_name#Given_name
 
-    prefixes_female = ("Cô", "Chị", "Bà", "Quý cô", "Bác")
+    prefixes_female = ("Cô", "Chị", "Bà", "Quý cô")
 
     prefixes_male = ("Ông", "Anh", "Bác", "Quý ông", "Chú")
 
