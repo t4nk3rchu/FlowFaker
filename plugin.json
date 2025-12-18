@@ -1,0 +1,12 @@
+{
+  "ID": "757e8531-8aa3-41a6-bcd4-358d5bbe4c3c",
+  "ActionKeyword": "fake",
+  "Name": "FlowFaker",
+  "Description": "Flow Launcher plugin using FakerJS to generate fake data",
+  "Author": "t4nk3rchu",
+  "Version": "1.0.1",
+  "Language": "javascript",
+  "Website": "https://github.com/Flow-Launcher/Flow.Launcher.FlowFaker",
+  "ExecuteFileName": "main.js",
+  "IcoPath": "Images\\app.png"
+}

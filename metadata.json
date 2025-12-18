@@ -1,0 +1,1393 @@
+{
+  "animal": {
+    "dog": {
+      "description": "Returns a random dog breed.",
+      "params": []
+    },
+    "cat": {
+      "description": "Returns a random cat breed.",
+      "params": []
+    },
+    "snake": {
+      "description": "Returns a random snake species.",
+      "params": []
+    },
+    "bear": {
+      "description": "Returns a random bear species.",
+      "params": []
+    },
+    "lion": {
+      "description": "Returns a random lion species.",
+      "params": []
+    },
+    "cetacean": {
+      "description": "Returns a random cetacean species.",
+      "params": []
+    },
+    "horse": {
+      "description": "Returns a random horse breed.",
+      "params": []
+    },
+    "bird": {
+      "description": "Returns a random bird species.",
+      "params": []
+    },
+    "cow": {
+      "description": "Returns a random cow species.",
+      "params": []
+    },
+    "fish": {
+      "description": "Returns a random fish species.",
+      "params": []
+    },
+    "crocodilia": {
+      "description": "Returns a random crocodilian species.",
+      "params": []
+    },
+    "insect": {
+      "description": "Returns a random insect species.",
+      "params": []
+    },
+    "rabbit": {
+      "description": "Returns a random rabbit species.",
+      "params": []
+    },
+    "rodent": {
+      "description": "Returns a random rodent breed.",
+      "params": []
+    },
+    "type": {
+      "description": "Returns a random animal type.",
+      "params": []
+    },
+    "petName": {
+      "description": "Returns a random pet name.",
+      "params": []
+    }
+  },
+  "book": {
+    "author": {
+      "description": "Returns a random author name.",
+      "params": []
+    },
+    "format": {
+      "description": "Returns a random book format.",
+      "params": []
+    },
+    "genre": {
+      "description": "Returns a random genre.",
+      "params": []
+    },
+    "publisher": {
+      "description": "Returns a random publisher.",
+      "params": []
+    },
+    "series": {
+      "description": "Returns a random series.",
+      "params": []
+    },
+    "title": {
+      "description": "Returns a random title.",
+      "params": []
+    }
+  },
+  "color": {
+    "human": {
+      "description": "Returns a random human-readable color name.",
+      "params": []
+    },
+    "space": {
+      "description": "Returns a random color space name from the worldwide accepted color spaces.",
+      "params": []
+    },
+    "cssSupportedFunction": {
+      "description": "Returns a random css supported color function name.",
+      "params": []
+    },
+    "cssSupportedSpace": {
+      "description": "Returns a random css supported color space name.",
+      "params": []
+    },
+    "rgb": {
+      "description": "Returns an RGB color.",
+      "params": [
+        "prefix",
+        "casing",
+        "format",
+        "includeAlpha"
+      ]
+    },
+    "cmyk": {
+      "description": "Returns a CMYK color.",
+      "params": [
+        "format"
+      ]
+    },
+    "hsl": {
+      "description": "Returns an HSL color.",
+      "params": [
+        "format",
+        "includeAlpha"
+      ]
+    },
+    "hwb": {
+      "description": "Returns an HWB color.",
+      "params": [
+        "format"
+      ]
+    },
+    "lab": {
+      "description": "Returns a LAB (CIELAB) color.",
+      "params": [
+        "format"
+      ]
+    },
+    "lch": {
+      "description": "Returns an LCH color. Even though upper bound of",
+      "params": [
+        "format"
+      ]
+    },
+    "colorByCSSColorSpace": {
+      "description": "Returns a random color based on CSS color space specified.",
+      "params": [
+        "format",
+        "space"
+      ]
+    }
+  },
+  "commerce": {
+    "department": {
+      "description": "Returns a department inside a shop.",
+      "params": []
+    },
+    "productName": {
+      "description": "Generates a random descriptive product name.",
+      "params": []
+    },
+    "price": {
+      "description": "Generates a price between min and max (inclusive).",
+      "params": [
+        "min",
+        "max",
+        "dec",
+        "symbol"
+      ]
+    },
+    "productAdjective": {
+      "description": "Returns an adjective describing a product.",
+      "params": []
+    },
+    "productMaterial": {
+      "description": "Returns a material of a product.",
+      "params": []
+    },
+    "product": {
+      "description": "Returns a short product name.",
+      "params": []
+    },
+    "productDescription": {
+      "description": "Returns a product description.",
+      "params": []
+    },
+    "isbn": {
+      "description": "Returns a random [ISBN](https://en.wikipedia.org/wiki/ISBN) identifier.",
+      "params": [
+        "variant",
+        "separator"
+      ]
+    }
+  },
+  "company": {
+    "name": {
+      "description": "Generates a random company name.",
+      "params": []
+    },
+    "catchPhrase": {
+      "description": "Generates a random catch phrase that can be displayed to an end user.",
+      "params": []
+    },
+    "buzzPhrase": {
+      "description": "Generates a random buzz phrase that can be used to demonstrate data being viewed by a manager.",
+      "params": []
+    },
+    "catchPhraseAdjective": {
+      "description": "Returns a random catch phrase adjective that can be displayed to an end user..",
+      "params": []
+    },
+    "catchPhraseDescriptor": {
+      "description": "Returns a random catch phrase descriptor that can be displayed to an end user..",
+      "params": []
+    },
+    "catchPhraseNoun": {
+      "description": "Returns a random catch phrase noun that can be displayed to an end user..",
+      "params": []
+    },
+    "buzzAdjective": {
+      "description": "Returns a random buzz adjective that can be used to demonstrate data being viewed by a manager.",
+      "params": []
+    },
+    "buzzVerb": {
+      "description": "Returns a random buzz verb that can be used to demonstrate data being viewed by a manager.",
+      "params": []
+    },
+    "buzzNoun": {
+      "description": "Returns a random buzz noun that can be used to demonstrate data being viewed by a manager.",
+      "params": []
+    }
+  },
+  "database": {
+    "column": {
+      "description": "Returns a random database column name.",
+      "params": []
+    },
+    "type": {
+      "description": "Returns a random database column type.",
+      "params": []
+    },
+    "collation": {
+      "description": "Returns a random database collation.",
+      "params": []
+    },
+    "engine": {
+      "description": "Returns a random database engine.",
+      "params": []
+    },
+    "mongodbObjectId": {
+      "description": "Returns a MongoDB [ObjectId](https://docs.mongodb.com/manual/reference/method/ObjectId/) string.",
+      "params": []
+    }
+  },
+  "simpledate": {
+    "anytime": {
+      "description": "Generates a random date that can be either in the past or in the future.",
+      "params": [
+        "refDate"
+      ]
+    },
+    "past": {
+      "description": "Generates a random date in the past.",
+      "params": [
+        "years",
+        "refDate"
+      ]
+    },
+    "future": {
+      "description": "Generates a random date in the future.",
+      "params": [
+        "years",
+        "refDate"
+      ]
+    },
+    "between": {
+      "description": "Generates a random date between the given boundaries.",
+      "params": [
+        "from",
+        "to"
+      ]
+    },
+    "betweens": {
+      "description": "Generates random dates between the given boundaries. The dates will be returned in an array sorted in chronological order.",
+      "params": [
+        "from",
+        "to",
+        "count"
+      ]
+    },
+    "recent": {
+      "description": "Generates a random date in the recent past.",
+      "params": [
+        "days",
+        "refDate"
+      ]
+    },
+    "soon": {
+      "description": "Generates a random date in the near future.",
+      "params": [
+        "days",
+        "refDate"
+      ]
+    },
+    "birthdate": {
+      "description": "Returns a random birthdate for a given age range.",
+      "params": [
+        "mode",
+        "min",
+        "max",
+        "refDate"
+      ]
+    }
+  },
+  "date": {
+    "month": {
+      "description": "Returns a random name of a month.",
+      "params": [
+        "abbreviated",
+        "context"
+      ]
+    },
+    "weekday": {
+      "description": "Returns a random day of the week.",
+      "params": [
+        "abbreviated",
+        "context"
+      ]
+    },
+    "timeZone": {
+      "description": "Returns a random IANA time zone name.",
+      "params": []
+    }
+  },
+  "string": {
+    "fromCharacters": {
+      "description": "Generates a string from the given characters.",
+      "params": [
+        "characters",
+        "length"
+      ]
+    },
+    "alpha": {
+      "description": "Generating a string consisting of letters in the English alphabet.",
+      "params": [
+        "length",
+        "casing",
+        "exclude"
+      ]
+    },
+    "alphanumeric": {
+      "description": "Generating a string consisting of alpha characters and digits.",
+      "params": [
+        "length",
+        "casing",
+        "exclude"
+      ]
+    },
+    "binary": {
+      "description": "Returns a [binary](https://en.wikipedia.org/wiki/Binary_number) string.",
+      "params": [
+        "length",
+        "prefix"
+      ]
+    },
+    "octal": {
+      "description": "Returns an [octal](https://en.wikipedia.org/wiki/Octal) string.",
+      "params": [
+        "length",
+        "prefix"
+      ]
+    },
+    "hexadecimal": {
+      "description": "Returns a [hexadecimal](https://en.wikipedia.org/wiki/Hexadecimal) string.",
+      "params": [
+        "length",
+        "casing",
+        "prefix"
+      ]
+    },
+    "numeric": {
+      "description": "Generates a given length string of digits.",
+      "params": [
+        "length",
+        "allowLeadingZeros",
+        "exclude"
+      ]
+    },
+    "sample": {
+      "description": "Returns a string containing UTF-16 chars between 33 and 125 (`!` to `}`).",
+      "params": [
+        "length"
+      ]
+    },
+    "uuid": {
+      "description": "Returns a UUID v4 ([Universally Unique Identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier)).",
+      "params": []
+    },
+    "ulid": {
+      "description": "Returns a ULID ([Universally Unique Lexicographically Sortable Identifier](https://github.com/ulid/spec)).",
+      "params": [
+        "refDate"
+      ]
+    },
+    "nanoid": {
+      "description": "Generates a [Nano ID](https://github.com/ai/nanoid).",
+      "params": [
+        "length"
+      ]
+    },
+    "symbol": {
+      "description": "Returns a string containing only special characters from the following list:",
+      "params": [
+        "length"
+      ]
+    }
+  },
+  "finance": {
+    "accountNumber": {
+      "description": "Generates a random account number.",
+      "params": [
+        "optionsOrLength"
+      ]
+    },
+    "accountName": {
+      "description": "Generates a random account name.",
+      "params": []
+    },
+    "routingNumber": {
+      "description": "Generates a random routing number.",
+      "params": []
+    },
+    "amount": {
+      "description": "Generates a random amount between the given bounds (inclusive).",
+      "params": [
+        "min",
+        "max",
+        "dec",
+        "symbol",
+        "autoFormat"
+      ]
+    },
+    "transactionType": {
+      "description": "Returns a random transaction type.",
+      "params": []
+    },
+    "currency": {
+      "description": "Returns a random currency object, containing `code`, `name`, `symbol`, and `numericCode` properties.",
+      "params": []
+    },
+    "currencyCode": {
+      "description": "Returns a random currency code.",
+      "params": []
+    },
+    "currencyName": {
+      "description": "Returns a random currency name.",
+      "params": []
+    },
+    "currencySymbol": {
+      "description": "Returns a random currency symbol.",
+      "params": []
+    },
+    "currencyNumericCode": {
+      "description": "Returns a random currency numeric code.",
+      "params": []
+    },
+    "bitcoinAddress": {
+      "description": "Generates a random Bitcoin address.",
+      "params": [
+        "type",
+        "network"
+      ]
+    },
+    "litecoinAddress": {
+      "description": "Generates a random Litecoin address.",
+      "params": []
+    },
+    "creditCardNumber": {
+      "description": "Generates a random credit card number.",
+      "params": [
+        "issuer"
+      ]
+    },
+    "creditCardCVV": {
+      "description": "Generates a random credit card CVV.",
+      "params": []
+    },
+    "creditCardIssuer": {
+      "description": "Returns a random credit card issuer.",
+      "params": []
+    },
+    "pin": {
+      "description": "Generates a random PIN number.",
+      "params": [
+        "length"
+      ]
+    },
+    "ethereumAddress": {
+      "description": "Creates a random, non-checksum Ethereum address.",
+      "params": []
+    },
+    "iban": {
+      "description": "Generates a random IBAN.",
+      "params": [
+        "formatted",
+        "countryCode"
+      ]
+    },
+    "bic": {
+      "description": "Generates a random SWIFT/BIC code based on the [ISO-9362](https://en.wikipedia.org/wiki/ISO_9362) format.",
+      "params": [
+        "includeBranchCode"
+      ]
+    },
+    "transactionDescription": {
+      "description": "Generates a random transaction description.",
+      "params": []
+    }
+  },
+  "food": {
+    "adjective": {
+      "description": "Generates a random dish adjective.",
+      "params": []
+    },
+    "description": {
+      "description": "Generates a random dish description.",
+      "params": []
+    },
+    "dish": {
+      "description": "Generates a random dish name.",
+      "params": []
+    },
+    "ethnicCategory": {
+      "description": "Generates a random food's ethnic category.",
+      "params": []
+    },
+    "fruit": {
+      "description": "Generates a random fruit name.",
+      "params": []
+    },
+    "ingredient": {
+      "description": "Generates a random ingredient name.",
+      "params": []
+    },
+    "meat": {
+      "description": "Generates a random meat",
+      "params": []
+    },
+    "spice": {
+      "description": "Generates a random spice name.",
+      "params": []
+    },
+    "vegetable": {
+      "description": "Generates a random vegetable name.",
+      "params": []
+    }
+  },
+  "git": {
+    "branch": {
+      "description": "Generates a random branch name.",
+      "params": []
+    },
+    "commitEntry": {
+      "description": "Generates a random commit entry as printed by `git log`.",
+      "params": [
+        "merge",
+        "eol",
+        "refDate"
+      ]
+    },
+    "commitMessage": {
+      "description": "Generates a random commit message.",
+      "params": []
+    },
+    "commitDate": {
+      "description": "Generates a date string for a git commit using the same format as `git log`.",
+      "params": [
+        "refDate"
+      ]
+    },
+    "commitSha": {
+      "description": "Generates a random commit sha.",
+      "params": [
+        "length"
+      ]
+    }
+  },
+  "hacker": {
+    "abbreviation": {
+      "description": "Returns a random hacker/IT abbreviation.",
+      "params": []
+    },
+    "adjective": {
+      "description": "Returns a random hacker/IT adjective.",
+      "params": []
+    },
+    "noun": {
+      "description": "Returns a random hacker/IT noun.",
+      "params": []
+    },
+    "verb": {
+      "description": "Returns a random hacker/IT verb.",
+      "params": []
+    },
+    "ingverb": {
+      "description": "Returns a random hacker/IT verb for continuous actions (en: ing suffix; e.g. hacking).",
+      "params": []
+    },
+    "phrase": {
+      "description": "Generates a random hacker/IT phrase.",
+      "params": []
+    }
+  },
+  "simplehelpers": {
+    "slugify": {
+      "description": "Slugifies the given string.",
+      "params": [
+        "string"
+      ]
+    },
+    "replaceSymbols": {
+      "description": "Parses the given string symbol by symbols and replaces the placeholder appropriately.",
+      "params": [
+        "string"
+      ]
+    },
+    "replaceCreditCardSymbols": {
+      "description": "Replaces the symbols and patterns in a credit card schema including Luhn checksum.",
+      "params": [
+        "string",
+        "symbol"
+      ]
+    },
+    "fromRegExp": {
+      "description": "Generates a string matching the given regex like expressions.",
+      "params": [
+        "pattern"
+      ]
+    },
+    "mustache": {
+      "description": "Replaces the `{{placeholder}}` patterns in the given string mustache style.",
+      "params": [
+        "text",
+        "data"
+      ]
+    },
+    "rangeToNumber": {
+      "description": "Helper method that converts the given number or range to a number.",
+      "params": [
+        "numberOrRange"
+      ]
+    }
+  },
+  "helpers": {
+    "fake": {
+      "description": "Generator for combining faker methods based on a static string input.",
+      "params": [
+        "pattern"
+      ]
+    }
+  },
+  "person": {
+    "firstName": {
+      "description": "Returns a random first name.",
+      "params": [
+        "sex"
+      ]
+    },
+    "lastName": {
+      "description": "Returns a random last name.",
+      "params": [
+        "sex"
+      ]
+    },
+    "middleName": {
+      "description": "Returns a random middle name.",
+      "params": [
+        "sex"
+      ]
+    },
+    "fullName": {
+      "description": "Generates a random full name.",
+      "params": [
+        "firstName",
+        "lastName",
+        "sex"
+      ]
+    },
+    "gender": {
+      "description": "Returns a random gender.",
+      "params": []
+    },
+    "sex": {
+      "description": "Returns a random sex.",
+      "params": []
+    },
+    "sexType": {
+      "description": "Returns a random sex type. The `SexType` is intended to be used in parameters and conditions.",
+      "params": []
+    },
+    "bio": {
+      "description": "Returns a random short biography",
+      "params": []
+    },
+    "prefix": {
+      "description": "Returns a random person prefix.",
+      "params": [
+        "sex"
+      ]
+    },
+    "suffix": {
+      "description": "Returns a random person suffix.",
+      "params": []
+    },
+    "jobTitle": {
+      "description": "Generates a random job title.",
+      "params": []
+    },
+    "jobDescriptor": {
+      "description": "Generates a random job descriptor.",
+      "params": []
+    },
+    "jobArea": {
+      "description": "Generates a random job area.",
+      "params": []
+    },
+    "jobType": {
+      "description": "Generates a random job type.",
+      "params": []
+    },
+    "zodiacSign": {
+      "description": "Returns a random zodiac sign.",
+      "params": []
+    }
+  },
+  "image": {
+    "avatar": {
+      "description": "Generates a random avatar image url.",
+      "params": []
+    },
+    "avatarGitHub": {
+      "description": "Generates a random avatar from GitHub.",
+      "params": []
+    },
+    "personPortrait": {
+      "description": "Generates a random square portrait (avatar) of a person.",
+      "params": [
+        "sex",
+        "size"
+      ]
+    },
+    "url": {
+      "description": "Generates a random image url.",
+      "params": [
+        "width",
+        "height"
+      ]
+    },
+    "urlLoremFlickr": {
+      "description": "Generates a random image url provided via https://loremflickr.com.",
+      "params": [
+        "width",
+        "height",
+        "category"
+      ]
+    },
+    "urlPicsumPhotos": {
+      "description": "Generates a random image url provided via https://picsum.photos.",
+      "params": [
+        "width",
+        "height",
+        "grayscale",
+        "blur"
+      ]
+    },
+    "dataUri": {
+      "description": "Generates a random data uri containing an URL-encoded SVG image or a Base64-encoded SVG image.",
+      "params": [
+        "width",
+        "height",
+        "color",
+        "type"
+      ]
+    }
+  },
+  "internet": {
+    "email": {
+      "description": "Generates an email address using the given person's name as base.",
+      "params": [
+        "firstName",
+        "lastName",
+        "provider",
+        "allowSpecialCharacters"
+      ]
+    },
+    "exampleEmail": {
+      "description": "Generates an email address using an example mail provider using the given person's name as base.",
+      "params": [
+        "firstName",
+        "lastName",
+        "allowSpecialCharacters"
+      ]
+    },
+    "username": {
+      "description": "Generates a username using the given person's name as base.",
+      "params": [
+        "firstName",
+        "lastName"
+      ]
+    },
+    "displayName": {
+      "description": "Generates a display name using the given person's name as base.",
+      "params": [
+        "firstName",
+        "lastName"
+      ]
+    },
+    "protocol": {
+      "description": "Returns a random web protocol. Either `http` or `https`.",
+      "params": []
+    },
+    "httpMethod": {
+      "description": "Returns a random http method.",
+      "params": []
+    },
+    "httpStatusCode": {
+      "description": "Generates a random HTTP status code.",
+      "params": [
+        "types"
+      ]
+    },
+    "url": {
+      "description": "Generates a random http(s) url.",
+      "params": [
+        "appendSlash",
+        "protocol"
+      ]
+    },
+    "domainName": {
+      "description": "Generates a random domain name.",
+      "params": []
+    },
+    "domainSuffix": {
+      "description": "Returns a random domain suffix.",
+      "params": []
+    },
+    "domainWord": {
+      "description": "Generates a random domain word.",
+      "params": []
+    },
+    "ip": {
+      "description": "Generates a random IPv4 or IPv6 address.",
+      "params": []
+    },
+    "ipv4": {
+      "description": "Generates a random IPv4 address.",
+      "params": [
+        "cidrBlock",
+        "network"
+      ]
+    },
+    "ipv6": {
+      "description": "Generates a random IPv6 address.",
+      "params": []
+    },
+    "port": {
+      "description": "Generates a random port number.",
+      "params": []
+    },
+    "userAgent": {
+      "description": "Generates a random user agent string.",
+      "params": []
+    },
+    "mac": {
+      "description": "Generates a random mac address.",
+      "params": [
+        "separator"
+      ]
+    },
+    "password": {
+      "description": "Generates a random password-like string. Do not use this method for generating actual passwords for users.",
+      "params": [
+        "length",
+        "memorable",
+        "pattern",
+        "prefix"
+      ]
+    },
+    "emoji": {
+      "description": "Generates a random emoji.",
+      "params": [
+        "types"
+      ]
+    },
+    "jwtAlgorithm": {
+      "description": "Generates a random JWT (JSON Web Token) Algorithm.",
+      "params": []
+    },
+    "jwt": {
+      "description": "Generates a random JWT (JSON Web Token).",
+      "params": [
+        "header",
+        "payload",
+        "refDate"
+      ]
+    }
+  },
+  "simplelocation": {
+    "latitude": {
+      "description": "Generates a random latitude.",
+      "params": [
+        "max",
+        "min",
+        "precision"
+      ]
+    },
+    "longitude": {
+      "description": "Generates a random longitude.",
+      "params": [
+        "max",
+        "min",
+        "precision"
+      ]
+    },
+    "nearbyGPSCoordinate": {
+      "description": "Generates a random GPS coordinate within the specified radius from the given coordinate.",
+      "params": [
+        "origin",
+        "radius",
+        "isMetric"
+      ]
+    }
+  },
+  "location": {
+    "zipCode": {
+      "description": "Generates random zip code from specified format. If format is not specified,",
+      "params": [
+        "state",
+        "format"
+      ]
+    },
+    "city": {
+      "description": "Generates a random localized city name.",
+      "params": []
+    },
+    "buildingNumber": {
+      "description": "Generates a random building number.",
+      "params": []
+    },
+    "street": {
+      "description": "Generates a random localized street name.",
+      "params": []
+    },
+    "streetAddress": {
+      "description": "Generates a random localized street address.",
+      "params": [
+        "useFullAddress"
+      ]
+    },
+    "secondaryAddress": {
+      "description": "Generates a random localized secondary address. This refers to a specific location at a given address",
+      "params": []
+    },
+    "county": {
+      "description": "Returns a random localized county, or other equivalent second-level administrative entity for the locale's country such as a district or department.",
+      "params": []
+    },
+    "country": {
+      "description": "Returns a random country name.",
+      "params": []
+    },
+    "continent": {
+      "description": "Returns a random continent name.",
+      "params": []
+    },
+    "countryCode": {
+      "description": "Returns a random [ISO_3166-1](https://en.wikipedia.org/wiki/ISO_3166-1) country code.",
+      "params": [
+        "variant"
+      ]
+    },
+    "state": {
+      "description": "Returns a random localized state, or other equivalent first-level administrative entity for the locale's country such as a province or region.",
+      "params": [
+        "abbreviated"
+      ]
+    },
+    "direction": {
+      "description": "Returns a random direction (cardinal and ordinal; northwest, east, etc).",
+      "params": [
+        "abbreviated"
+      ]
+    },
+    "cardinalDirection": {
+      "description": "Returns a random cardinal direction (north, east, south, west).",
+      "params": [
+        "abbreviated"
+      ]
+    },
+    "ordinalDirection": {
+      "description": "Returns a random ordinal direction (northwest, southeast, etc).",
+      "params": [
+        "abbreviated"
+      ]
+    },
+    "timeZone": {
+      "description": "Returns a random IANA time zone relevant to this locale.",
+      "params": []
+    },
+    "language": {
+      "description": "Returns a random spoken language.",
+      "params": []
+    }
+  },
+  "lorem": {
+    "word": {
+      "description": "Generates a word of a specified length.",
+      "params": [
+        "length",
+        "strategy"
+      ]
+    },
+    "words": {
+      "description": "Generates a space separated list of words.",
+      "params": [
+        "wordCount"
+      ]
+    },
+    "sentence": {
+      "description": "Generates a space separated list of words beginning with a capital letter and ending with a period.",
+      "params": [
+        "wordCount"
+      ]
+    },
+    "slug": {
+      "description": "Generates a slugified text consisting of the given number of hyphen separated words.",
+      "params": [
+        "wordCount"
+      ]
+    },
+    "sentences": {
+      "description": "Generates the given number of sentences.",
+      "params": [
+        "sentenceCount",
+        "separator"
+      ]
+    },
+    "paragraph": {
+      "description": "Generates a paragraph with the given number of sentences.",
+      "params": [
+        "sentenceCount"
+      ]
+    },
+    "paragraphs": {
+      "description": "Generates the given number of paragraphs.",
+      "params": [
+        "paragraphCount",
+        "separator"
+      ]
+    },
+    "text": {
+      "description": "Generates a random text based on a random lorem method.",
+      "params": []
+    },
+    "lines": {
+      "description": "Generates the given number lines of lorem separated by `'\\n'`.",
+      "params": [
+        "lineCount"
+      ]
+    }
+  },
+  "music": {
+    "album": {
+      "description": "Returns a random album name.",
+      "params": []
+    },
+    "artist": {
+      "description": "Returns a random artist name.",
+      "params": []
+    },
+    "genre": {
+      "description": "Returns a random music genre.",
+      "params": []
+    },
+    "songName": {
+      "description": "Returns a random song name.",
+      "params": []
+    }
+  },
+  "phone": {
+    "number": {
+      "description": "Generates a random phone number.",
+      "params": [
+        "style"
+      ]
+    },
+    "imei": {
+      "description": "Generates IMEI number.",
+      "params": []
+    }
+  },
+  "science": {
+    "chemicalElement": {
+      "description": "Returns a random periodic table element.",
+      "params": []
+    },
+    "unit": {
+      "description": "Returns a random scientific unit.",
+      "params": []
+    }
+  },
+  "system": {
+    "fileName": {
+      "description": "Returns a random file name with extension.",
+      "params": [
+        "extensionCount"
+      ]
+    },
+    "commonFileName": {
+      "description": "Returns a random file name with a given extension or a commonly used extension.",
+      "params": [
+        "extension"
+      ]
+    },
+    "mimeType": {
+      "description": "Returns a mime-type.",
+      "params": []
+    },
+    "commonFileType": {
+      "description": "Returns a commonly used file type.",
+      "params": []
+    },
+    "commonFileExt": {
+      "description": "Returns a commonly used file extension.",
+      "params": []
+    },
+    "fileType": {
+      "description": "Returns a file type.",
+      "params": []
+    },
+    "fileExt": {
+      "description": "Returns a file extension.",
+      "params": [
+        "mimeType"
+      ]
+    },
+    "directoryPath": {
+      "description": "Returns a directory path.",
+      "params": []
+    },
+    "filePath": {
+      "description": "Returns a file path.",
+      "params": []
+    },
+    "semver": {
+      "description": "Returns a [semantic version](https://semver.org).",
+      "params": []
+    },
+    "networkInterface": {
+      "description": "Returns a random [network interface](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_predictable_network_interface_device_names).",
+      "params": [
+        "interfaceType",
+        "interfaceSchema"
+      ]
+    },
+    "cron": {
+      "description": "Returns a random cron expression.",
+      "params": [
+        "includeYear",
+        "includeNonStandard"
+      ]
+    }
+  },
+  "vehicle": {
+    "vehicle": {
+      "description": "Returns a random vehicle.",
+      "params": []
+    },
+    "manufacturer": {
+      "description": "Returns a manufacturer name.",
+      "params": []
+    },
+    "model": {
+      "description": "Returns a vehicle model.",
+      "params": []
+    },
+    "type": {
+      "description": "Returns a vehicle type.",
+      "params": []
+    },
+    "fuel": {
+      "description": "Returns a fuel type.",
+      "params": []
+    },
+    "vin": {
+      "description": "Returns a vehicle identification number (VIN).",
+      "params": []
+    },
+    "color": {
+      "description": "Returns a vehicle color.",
+      "params": []
+    },
+    "vrm": {
+      "description": "Returns a vehicle registration number (Vehicle Registration Mark - VRM)",
+      "params": []
+    },
+    "bicycle": {
+      "description": "Returns a type of bicycle.",
+      "params": []
+    }
+  },
+  "word": {
+    "adjective": {
+      "description": "Returns a random adjective.",
+      "params": [
+        "length",
+        "strategy"
+      ]
+    },
+    "adverb": {
+      "description": "Returns a random adverb.",
+      "params": [
+        "length",
+        "strategy"
+      ]
+    },
+    "conjunction": {
+      "description": "Returns a random conjunction.",
+      "params": [
+        "length",
+        "strategy"
+      ]
+    },
+    "interjection": {
+      "description": "Returns a random interjection.",
+      "params": [
+        "length",
+        "strategy"
+      ]
+    },
+    "noun": {
+      "description": "Returns a random noun.",
+      "params": [
+        "length",
+        "strategy"
+      ]
+    },
+    "preposition": {
+      "description": "Returns a random preposition.",
+      "params": [
+        "length",
+        "strategy"
+      ]
+    },
+    "verb": {
+      "description": "Returns a random verb.",
+      "params": [
+        "length",
+        "strategy"
+      ]
+    },
+    "sample": {
+      "description": "Returns a random word, that can be an adjective, adverb, conjunction, interjection, noun, preposition, or verb.",
+      "params": [
+        "length",
+        "strategy"
+      ]
+    },
+    "words": {
+      "description": "Returns a random string containing some words separated by spaces.",
+      "params": [
+        "count"
+      ]
+    },
+    "next": {
+      "description": "Generates a random float between 0 (inclusive) and 1 (exclusive).",
+      "params": []
+    },
+    "seed": {
+      "description": "Sets the seed to use.",
+      "params": [
+        "seed"
+      ]
+    }
+  },
+  "datatype": {
+    "boolean": {
+      "description": "Returns the boolean value true or false.",
+      "params": [
+        "probability"
+      ]
+    }
+  },
+  "number": {
+    "int": {
+      "description": "Returns a single random integer between zero and the given max value or the given range.",
+      "params": [
+        "min",
+        "max",
+        "multipleOf"
+      ]
+    },
+    "float": {
+      "description": "Returns a single random floating-point number, by default between `0.0` and `1.0`. To change the range, pass a `min` and `max` value. To limit the number of decimal places, pass a `multipleOf` or `fractionDigits` parameter.",
+      "params": [
+        "min",
+        "max",
+        "multipleOf",
+        "fractionDigits"
+      ]
+    },
+    "binary": {
+      "description": "Returns a [binary](https://en.wikipedia.org/wiki/Binary_number) number.",
+      "params": [
+        "min",
+        "max"
+      ]
+    },
+    "octal": {
+      "description": "Returns an [octal](https://en.wikipedia.org/wiki/Octal) number.",
+      "params": [
+        "min",
+        "max"
+      ]
+    },
+    "hex": {
+      "description": "Returns a lowercase [hexadecimal](https://en.wikipedia.org/wiki/Hexadecimal) number.",
+      "params": [
+        "min",
+        "max"
+      ]
+    },
+    "bigInt": {
+      "description": "Returns a [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#bigint_type) number.",
+      "params": [
+        "min",
+        "max",
+        "multipleOf"
+      ]
+    },
+    "romanNumeral": {
+      "description": "Returns a roman numeral in String format.",
+      "params": [
+        "min",
+        "max"
+      ]
+    }
+  },
+  "airline": {
+    "airport": {
+      "description": "Generates a random airport.",
+      "params": []
+    },
+    "airline": {
+      "description": "Generates a random airline.",
+      "params": []
+    },
+    "airplane": {
+      "description": "Generates a random airplane.",
+      "params": []
+    },
+    "recordLocator": {
+      "description": "Generates a random [record locator](https://en.wikipedia.org/wiki/Record_locator). Record locators",
+      "params": [
+        "allowNumerics",
+        "allowVisuallySimilarCharacters"
+      ]
+    },
+    "seat": {
+      "description": "Generates a random seat.",
+      "params": [
+        "aircraftType"
+      ]
+    },
+    "aircraftType": {
+      "description": "Returns a random aircraft type.",
+      "params": []
+    },
+    "flightNumber": {
+      "description": "Returns a random flight number. Flight numbers are always 1 to 4 digits long. Sometimes they are",
+      "params": [
+        "length",
+        "addLeadingZeros"
+      ]
+    }
+  }
+}
