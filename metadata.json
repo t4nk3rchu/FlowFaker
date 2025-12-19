@@ -111,48 +111,48 @@
     "rgb": {
       "description": "Returns an RGB color.",
       "params": [
-        "prefix",
-        "casing",
-        "format",
-        "includeAlpha"
+        "prefix:#",
+        "casing:'upper' |'lower'",
+        "format:'decimal' | 'css' | 'binary' | 'hex'",
+        "includeAlpha:'true' | 'false'"
       ]
     },
     "cmyk": {
       "description": "Returns a CMYK color.",
       "params": [
-        "format"
+        "format:'decimal' | 'css' | 'binary'"
       ]
     },
     "hsl": {
       "description": "Returns an HSL color.",
       "params": [
-        "format",
-        "includeAlpha"
+        "format:'decimal' | 'css' | 'binary'",
+        "includeAlpha:'true' | 'false'"
       ]
     },
     "hwb": {
       "description": "Returns an HWB color.",
       "params": [
-        "format"
+        "format:'decimal' | 'css' | 'binary'"
       ]
     },
     "lab": {
       "description": "Returns a LAB (CIELAB) color.",
       "params": [
-        "format"
+        "format:'decimal' | 'css' | 'binary'"
       ]
     },
     "lch": {
       "description": "Returns an LCH color. Even though upper bound of",
       "params": [
-        "format"
+        "format:'decimal' | 'css' | 'binary'"
       ]
     },
     "colorByCSSColorSpace": {
       "description": "Returns a random color based on CSS color space specified.",
       "params": [
-        "format",
-        "space"
+        "format:'decimal' | 'css' | 'binary'",
+        "space:'sRGB' | 'display-p3' | 'rec2020' | 'a98-rgb' | 'prophoto-rgb'"
       ]
     }
   },
@@ -168,10 +168,10 @@
     "price": {
       "description": "Generates a price between min and max (inclusive).",
       "params": [
-        "min",
-        "max",
-        "dec",
-        "symbol"
+        "min:number",
+        "max:number",
+        "dec:number",
+        "symbol:string"
       ]
     },
     "productAdjective": {
@@ -193,8 +193,8 @@
     "isbn": {
       "description": "Returns a random [ISBN](https://en.wikipedia.org/wiki/ISBN) identifier.",
       "params": [
-        "variant",
-        "separator"
+        "variant:number",
+        "separator:string"
       ]
     }
   },
@@ -262,59 +262,59 @@
     "anytime": {
       "description": "Generates a random date that can be either in the past or in the future.",
       "params": [
-        "refDate"
+        "refDate:yyyy-mm-dd"
       ]
     },
     "past": {
       "description": "Generates a random date in the past.",
       "params": [
-        "years",
-        "refDate"
+        "years:n",
+        "refDate:yyyy-mm-dd"
       ]
     },
     "future": {
       "description": "Generates a random date in the future.",
       "params": [
-        "years",
-        "refDate"
+        "years:n",
+        "refDate:yyyy-mm-dd"
       ]
     },
     "between": {
       "description": "Generates a random date between the given boundaries.",
       "params": [
-        "from",
-        "to"
+        "from:yyyy-mm-dd",
+        "to:yyyy-mm-dd"
       ]
     },
     "betweens": {
       "description": "Generates random dates between the given boundaries. The dates will be returned in an array sorted in chronological order.",
       "params": [
-        "from",
-        "to",
-        "count"
+        "from:yyyy-mm-dd",
+        "to:yyyy-mm-dd",
+        "count:n"
       ]
     },
     "recent": {
       "description": "Generates a random date in the recent past.",
       "params": [
-        "days",
-        "refDate"
+        "days:n",
+        "refDate:yyyy-mm-dd"
       ]
     },
     "soon": {
       "description": "Generates a random date in the near future.",
       "params": [
-        "days",
-        "refDate"
+        "days:n",
+        "refDate:yyyy-mm-dd"
       ]
     },
     "birthdate": {
       "description": "Returns a random birthdate for a given age range.",
       "params": [
-        "mode",
-        "min",
-        "max",
-        "refDate"
+        "mode:'age' | 'year'",
+        "min:n",
+        "max:n",
+        "refDate:yyyy-mm-dd"
       ]
     }
   },
@@ -322,15 +322,15 @@
     "month": {
       "description": "Returns a random name of a month.",
       "params": [
-        "abbreviated",
-        "context"
+        "abbreviated:'true' | 'false'",
+        "context:'true' | 'false'"
       ]
     },
     "weekday": {
       "description": "Returns a random day of the week.",
       "params": [
-        "abbreviated",
-        "context"
+        "abbreviated:'true' | 'false'",
+        "context:'true' | 'false'"
       ]
     },
     "timeZone": {
@@ -342,60 +342,60 @@
     "fromCharacters": {
       "description": "Generates a string from the given characters.",
       "params": [
-        "characters",
-        "length"
+        "characters:string",
+        "length:n"
       ]
     },
     "alpha": {
       "description": "Generating a string consisting of letters in the English alphabet.",
       "params": [
-        "length",
-        "casing",
-        "exclude"
+        "length:n",
+        "casing:'upper' | 'lower' | 'mixed'",
+        "exclude:string"
       ]
     },
     "alphanumeric": {
       "description": "Generating a string consisting of alpha characters and digits.",
       "params": [
-        "length",
-        "casing",
-        "exclude"
+        "length:n",
+        "casing:'upper' | 'lower' | 'mixed'",
+        "exclude:string"
       ]
     },
     "binary": {
       "description": "Returns a [binary](https://en.wikipedia.org/wiki/Binary_number) string.",
       "params": [
-        "length",
-        "prefix"
+        "length:n",
+        "prefix:string"
       ]
     },
     "octal": {
       "description": "Returns an [octal](https://en.wikipedia.org/wiki/Octal) string.",
       "params": [
-        "length",
-        "prefix"
+        "length:n",
+        "prefix:string"
       ]
     },
     "hexadecimal": {
       "description": "Returns a [hexadecimal](https://en.wikipedia.org/wiki/Hexadecimal) string.",
       "params": [
-        "length",
-        "casing",
-        "prefix"
+        "length:n",
+        "casing:'upper' | 'lower' | 'mixed'",
+        "prefix:string"
       ]
     },
     "numeric": {
       "description": "Generates a given length string of digits.",
       "params": [
-        "length",
-        "allowLeadingZeros",
+        "length:n",
+        "allowLeadingZeros:'true' | 'false'",
         "exclude"
       ]
     },
     "sample": {
       "description": "Returns a string containing UTF-16 chars between 33 and 125 (`!` to `}`).",
       "params": [
-        "length"
+        "length:n"
       ]
     },
     "uuid": {
@@ -405,19 +405,19 @@
     "ulid": {
       "description": "Returns a ULID ([Universally Unique Lexicographically Sortable Identifier](https://github.com/ulid/spec)).",
       "params": [
-        "refDate"
+        "refDate:yyyy-mm-dd"
       ]
     },
     "nanoid": {
       "description": "Generates a [Nano ID](https://github.com/ai/nanoid).",
       "params": [
-        "length"
+        "length:n"
       ]
     },
     "symbol": {
       "description": "Returns a string containing only special characters from the following list:",
       "params": [
-        "length"
+        "length:n"
       ]
     }
   },
@@ -425,7 +425,7 @@
     "accountNumber": {
       "description": "Generates a random account number.",
       "params": [
-        "optionsOrLength"
+        "length:n"
       ]
     },
     "accountName": {
@@ -439,11 +439,11 @@
     "amount": {
       "description": "Generates a random amount between the given bounds (inclusive).",
       "params": [
-        "min",
-        "max",
-        "dec",
-        "symbol",
-        "autoFormat"
+        "min:n",
+        "max:n",
+        "dec:n",
+        "symbol:string",
+        "autoFormat:'true' | 'false'"
       ]
     },
     "transactionType": {
@@ -473,8 +473,8 @@
     "bitcoinAddress": {
       "description": "Generates a random Bitcoin address.",
       "params": [
-        "type",
-        "network"
+        "type:'legacy' | 'segwit' | 'bech32' | 'taproot'",
+        "network:'mainnet' | 'testnet'"
       ]
     },
     "litecoinAddress": {
@@ -484,7 +484,7 @@
     "creditCardNumber": {
       "description": "Generates a random credit card number.",
       "params": [
-        "issuer"
+        "issuer:string"
       ]
     },
     "creditCardCVV": {
@@ -498,7 +498,7 @@
     "pin": {
       "description": "Generates a random PIN number.",
       "params": [
-        "length"
+        "length:n"
       ]
     },
     "ethereumAddress": {
@@ -508,14 +508,14 @@
     "iban": {
       "description": "Generates a random IBAN.",
       "params": [
-        "formatted",
-        "countryCode"
+        "formatted:'true' | 'false'",
+        "countryCode:string"
       ]
     },
     "bic": {
       "description": "Generates a random SWIFT/BIC code based on the [ISO-9362](https://en.wikipedia.org/wiki/ISO_9362) format.",
       "params": [
-        "includeBranchCode"
+        "includeBranchCode:'true' | 'false'"
       ]
     },
     "transactionDescription": {
@@ -569,9 +569,9 @@
     "commitEntry": {
       "description": "Generates a random commit entry as printed by `git log`.",
       "params": [
-        "merge",
-        "eol",
-        "refDate"
+        "merge:'true' | 'false'",
+        "eol:'LF' | 'CRLF'",
+        "refDate:yyyy-mm-dd"
       ]
     },
     "commitMessage": {
@@ -581,13 +581,13 @@
     "commitDate": {
       "description": "Generates a date string for a git commit using the same format as `git log`.",
       "params": [
-        "refDate"
+        "refDate:yyyy-mm-dd"
       ]
     },
     "commitSha": {
       "description": "Generates a random commit sha.",
       "params": [
-        "length"
+        "length:n"
       ]
     }
   },
@@ -621,33 +621,33 @@
     "slugify": {
       "description": "Slugifies the given string.",
       "params": [
-        "string"
+        "string:string"
       ]
     },
     "replaceSymbols": {
       "description": "Parses the given string symbol by symbols and replaces the placeholder appropriately.",
       "params": [
-        "string"
+        "string:string"
       ]
     },
     "replaceCreditCardSymbols": {
       "description": "Replaces the symbols and patterns in a credit card schema including Luhn checksum.",
       "params": [
-        "string",
-        "symbol"
+        "string:string",
+        "symbol:string"
       ]
     },
     "fromRegExp": {
       "description": "Generates a string matching the given regex like expressions.",
       "params": [
-        "pattern"
+        "pattern:string"
       ]
     },
     "mustache": {
       "description": "Replaces the `{{placeholder}}` patterns in the given string mustache style.",
       "params": [
-        "text",
-        "data"
+        "text:string",
+        "data:object"
       ]
     },
     "rangeToNumber": {
@@ -669,27 +669,28 @@
     "firstName": {
       "description": "Returns a random first name.",
       "params": [
-        "sex"
+        "sex:'female' | 'male'"
       ]
     },
     "lastName": {
       "description": "Returns a random last name.",
       "params": [
-        "sex"
+        "sex:'female' | 'male'"
       ]
     },
     "middleName": {
       "description": "Returns a random middle name.",
       "params": [
-        "sex"
+        "sex:'female' | 'male'"
       ]
     },
     "fullName": {
       "description": "Generates a random full name.",
       "params": [
-        "firstName",
-        "lastName",
-        "sex"
+        "nameOrder:'last-first' | 'first-last'",
+        "firstName:string",
+        "lastName:string",
+        "sex:'female' | 'male'"
       ]
     },
     "gender": {
@@ -711,7 +712,7 @@
     "prefix": {
       "description": "Returns a random person prefix.",
       "params": [
-        "sex"
+        "sex:'female' | 'male'"
       ]
     },
     "suffix": {
@@ -751,41 +752,41 @@
     "personPortrait": {
       "description": "Generates a random square portrait (avatar) of a person.",
       "params": [
-        "sex",
-        "size"
+        "sex:'female' | 'male'",
+        "size:'512' | '256' | '128' | '64' | '32'"
       ]
     },
     "url": {
       "description": "Generates a random image url.",
       "params": [
-        "width",
-        "height"
+        "width:number",
+        "height:number"
       ]
     },
     "urlLoremFlickr": {
       "description": "Generates a random image url provided via https://loremflickr.com.",
       "params": [
-        "width",
-        "height",
-        "category"
+        "width:number",
+        "height:number",
+        "category:string"
       ]
     },
     "urlPicsumPhotos": {
       "description": "Generates a random image url provided via https://picsum.photos.",
       "params": [
-        "width",
-        "height",
-        "grayscale",
-        "blur"
+        "width:number",
+        "height:number",
+        "grayscale:'true' | 'false'",
+        "blur:'0' | '10' | '2' | '1' | '3' | '4' | '5' | '6' | '7' | '8' | '9'"
       ]
     },
     "dataUri": {
       "description": "Generates a random data uri containing an URL-encoded SVG image or a Base64-encoded SVG image.",
       "params": [
-        "width",
-        "height",
-        "color",
-        "type"
+        "width:number",
+        "height:number",
+        "color:string",
+        "type:'svg-uri' | 'svg-base64'"
       ]
     }
   },
@@ -793,32 +794,32 @@
     "email": {
       "description": "Generates an email address using the given person's name as base.",
       "params": [
-        "firstName",
-        "lastName",
-        "provider",
-        "allowSpecialCharacters"
+        "firstName:string",
+        "lastName:string",
+        "provider:string",
+        "allowSpecialCharacters:'true' | 'false'"
       ]
     },
     "exampleEmail": {
       "description": "Generates an email address using an example mail provider using the given person's name as base.",
       "params": [
-        "firstName",
-        "lastName",
-        "allowSpecialCharacters"
+        "firstName:string",
+        "lastName:string",
+        "allowSpecialCharacters:'true' | 'false'"
       ]
     },
     "username": {
       "description": "Generates a username using the given person's name as base.",
       "params": [
-        "firstName",
-        "lastName"
+        "firstName:string",
+        "lastName:string"
       ]
     },
     "displayName": {
       "description": "Generates a display name using the given person's name as base.",
       "params": [
-        "firstName",
-        "lastName"
+        "firstName:string",
+        "lastName:string"
       ]
     },
     "protocol": {
@@ -832,14 +833,14 @@
     "httpStatusCode": {
       "description": "Generates a random HTTP status code.",
       "params": [
-        "types"
+        "types:'informational' | 'success' | 'redirect' | 'clientError' | 'serverError'"
       ]
     },
     "url": {
       "description": "Generates a random http(s) url.",
       "params": [
-        "appendSlash",
-        "protocol"
+        "appendSlash:true | false",
+        "protocol:'http' | 'https'"
       ]
     },
     "domainName": {
@@ -861,8 +862,8 @@
     "ipv4": {
       "description": "Generates a random IPv4 address.",
       "params": [
-        "cidrBlock",
-        "network"
+        "cidrBlock:'x.x.x.x/y'",
+        "network:'any' | 'loopback' | 'private-a' | 'private-b' | 'private-c' | 'test-net-1' | 'test-net-2' | 'test-net-3' | 'link-local' | 'multicast'"
       ]
     },
     "ipv6": {
@@ -880,22 +881,22 @@
     "mac": {
       "description": "Generates a random mac address.",
       "params": [
-        "separator"
+        "separator:'-' | ':' | '.'"
       ]
     },
     "password": {
       "description": "Generates a random password-like string. Do not use this method for generating actual passwords for users.",
       "params": [
-        "length",
-        "memorable",
-        "pattern",
-        "prefix"
+        "length:number",
+        "memorable:true | false",
+        "pattern:RegExp",
+        "prefix:string"
       ]
     },
     "emoji": {
       "description": "Generates a random emoji.",
       "params": [
-        "types"
+        "types:'people' | 'nature' | 'food' | 'travel' | 'activity' | 'objects' | 'symbols' | 'flags'"
       ]
     },
     "jwtAlgorithm": {
@@ -915,25 +916,25 @@
     "latitude": {
       "description": "Generates a random latitude.",
       "params": [
-        "max",
-        "min",
-        "precision"
+        "max:number",
+        "min:number",
+        "precision:number"
       ]
     },
     "longitude": {
       "description": "Generates a random longitude.",
       "params": [
-        "max",
-        "min",
-        "precision"
+        "max:number",
+        "min:number",
+        "precision:number"
       ]
     },
     "nearbyGPSCoordinate": {
       "description": "Generates a random GPS coordinate within the specified radius from the given coordinate.",
       "params": [
-        "origin",
-        "radius",
-        "isMetric"
+        "origin:latitude_number, longitude_number",
+        "radius:number",
+        "isMetric:true | false"
       ]
     }
   },
@@ -941,8 +942,8 @@
     "zipCode": {
       "description": "Generates random zip code from specified format. If format is not specified,",
       "params": [
-        "state",
-        "format"
+        "state:string",
+        "format:'####'"
       ]
     },
     "city": {
@@ -960,7 +961,7 @@
     "streetAddress": {
       "description": "Generates a random localized street address.",
       "params": [
-        "useFullAddress"
+        "useFullAddress:true | false"
       ]
     },
     "secondaryAddress": {
@@ -982,31 +983,31 @@
     "countryCode": {
       "description": "Returns a random [ISO_3166-1](https://en.wikipedia.org/wiki/ISO_3166-1) country code.",
       "params": [
-        "variant"
+        "variant:'alpha-2' | 'alpha-3' | 'numeric'"
       ]
     },
     "state": {
       "description": "Returns a random localized state, or other equivalent first-level administrative entity for the locale's country such as a province or region.",
       "params": [
-        "abbreviated"
+        "abbreviated:true | false"
       ]
     },
     "direction": {
       "description": "Returns a random direction (cardinal and ordinal; northwest, east, etc).",
       "params": [
-        "abbreviated"
+        "abbreviated:true | false"
       ]
     },
     "cardinalDirection": {
       "description": "Returns a random cardinal direction (north, east, south, west).",
       "params": [
-        "abbreviated"
+        "abbreviated:true | false"
       ]
     },
     "ordinalDirection": {
       "description": "Returns a random ordinal direction (northwest, southeast, etc).",
       "params": [
-        "abbreviated"
+        "abbreviated:true | false"
       ]
     },
     "timeZone": {
@@ -1022,20 +1023,20 @@
     "word": {
       "description": "Generates a word of a specified length.",
       "params": [
-        "length",
-        "strategy"
+        "length:number",
+        "strategy:'fail' | 'closest' | 'shortest' | 'longest' | 'any-length'"
       ]
     },
     "words": {
       "description": "Generates a space separated list of words.",
       "params": [
-        "wordCount"
+        "wordCount:number"
       ]
     },
     "sentence": {
       "description": "Generates a space separated list of words beginning with a capital letter and ending with a period.",
       "params": [
-        "wordCount"
+        "wordCount:number"
       ]
     },
     "slug": {
@@ -1047,21 +1048,21 @@
     "sentences": {
       "description": "Generates the given number of sentences.",
       "params": [
-        "sentenceCount",
-        "separator"
+        "sentenceCount:number",
+        "separator:string"
       ]
     },
     "paragraph": {
       "description": "Generates a paragraph with the given number of sentences.",
       "params": [
-        "sentenceCount"
+        "sentenceCount:number"
       ]
     },
     "paragraphs": {
       "description": "Generates the given number of paragraphs.",
       "params": [
-        "paragraphCount",
-        "separator"
+        "paragraphCount:number",
+        "separator:string"
       ]
     },
     "text": {
@@ -1071,7 +1072,7 @@
     "lines": {
       "description": "Generates the given number lines of lorem separated by `'\\n'`.",
       "params": [
-        "lineCount"
+        "lineCount:number"
       ]
     }
   },
@@ -1097,7 +1098,7 @@
     "number": {
       "description": "Generates a random phone number.",
       "params": [
-        "style"
+        "style:'human' | 'national' | 'international'"
       ]
     },
     "imei": {
@@ -1119,13 +1120,13 @@
     "fileName": {
       "description": "Returns a random file name with extension.",
       "params": [
-        "extensionCount"
+        "extensionCount:number"
       ]
     },
     "commonFileName": {
       "description": "Returns a random file name with a given extension or a commonly used extension.",
       "params": [
-        "extension"
+        "extension:string"
       ]
     },
     "mimeType": {
@@ -1147,7 +1148,7 @@
     "fileExt": {
       "description": "Returns a file extension.",
       "params": [
-        "mimeType"
+        "mimeType:string"
       ]
     },
     "directoryPath": {
@@ -1165,15 +1166,15 @@
     "networkInterface": {
       "description": "Returns a random [network interface](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_predictable_network_interface_device_names).",
       "params": [
-        "interfaceType",
-        "interfaceSchema"
+        "interfaceType:'en' | 'wl' | 'ww'",
+        "interfaceSchema:'index' | 'slot' | 'mac' | 'pci'"
       ]
     },
     "cron": {
       "description": "Returns a random cron expression.",
       "params": [
-        "includeYear",
-        "includeNonStandard"
+        "includeYear:true | false",
+        "includeNonStandard:true | false"
       ]
     }
   },
@@ -1219,63 +1220,63 @@
     "adjective": {
       "description": "Returns a random adjective.",
       "params": [
-        "length",
-        "strategy"
+        "length:number",
+        "strategy:'fail' | 'closest' | 'shortest' | 'longest' | 'any-length'"
       ]
     },
     "adverb": {
       "description": "Returns a random adverb.",
       "params": [
-        "length",
-        "strategy"
+        "length:number",
+        "strategy:'fail' | 'closest' | 'shortest' | 'longest' | 'any-length'"
       ]
     },
     "conjunction": {
       "description": "Returns a random conjunction.",
       "params": [
-        "length",
-        "strategy"
+        "length:number",
+        "strategy:'fail' | 'closest' | 'shortest' | 'longest' | 'any-length'"
       ]
     },
     "interjection": {
       "description": "Returns a random interjection.",
       "params": [
-        "length",
-        "strategy"
+        "length:number",
+        "strategy:'fail' | 'closest' | 'shortest' | 'longest' | 'any-length'"
       ]
     },
     "noun": {
       "description": "Returns a random noun.",
       "params": [
-        "length",
-        "strategy"
+        "length:number",
+        "strategy:'fail' | 'closest' | 'shortest' | 'longest' | 'any-length'"
       ]
     },
     "preposition": {
       "description": "Returns a random preposition.",
       "params": [
-        "length",
-        "strategy"
+        "length:number",
+        "strategy:'fail' | 'closest' | 'shortest' | 'longest' | 'any-length'"
       ]
     },
     "verb": {
       "description": "Returns a random verb.",
       "params": [
-        "length",
-        "strategy"
+        "length:number",
+        "strategy:'fail' | 'closest' | 'shortest' | 'longest' | 'any-length'"
       ]
     },
     "sample": {
       "description": "Returns a random word, that can be an adjective, adverb, conjunction, interjection, noun, preposition, or verb.",
       "params": [
-        "length",
-        "strategy"
+        "length:number",
+        "strategy:'fail' | 'closest' | 'shortest' | 'longest' | 'any-length'"
       ]
     },
     "words": {
       "description": "Returns a random string containing some words separated by spaces.",
       "params": [
-        "count"
+        "count:number"
       ]
     },
     "next": {
@@ -1293,7 +1294,7 @@
     "boolean": {
       "description": "Returns the boolean value true or false.",
       "params": [
-        "probability"
+        "probability:number"
       ]
     }
   },
@@ -1301,54 +1302,54 @@
     "int": {
       "description": "Returns a single random integer between zero and the given max value or the given range.",
       "params": [
-        "min",
-        "max",
-        "multipleOf"
+        "min:number",
+        "max:number",
+        "multipleOf:number"
       ]
     },
     "float": {
       "description": "Returns a single random floating-point number, by default between `0.0` and `1.0`. To change the range, pass a `min` and `max` value. To limit the number of decimal places, pass a `multipleOf` or `fractionDigits` parameter.",
       "params": [
-        "min",
-        "max",
-        "multipleOf",
-        "fractionDigits"
+        "min:number",
+        "max:number",
+        "multipleOf:number",
+        "fractionDigits:number"
       ]
     },
     "binary": {
       "description": "Returns a [binary](https://en.wikipedia.org/wiki/Binary_number) number.",
       "params": [
-        "min",
-        "max"
+        "min:number",
+        "max:number"
       ]
     },
     "octal": {
       "description": "Returns an [octal](https://en.wikipedia.org/wiki/Octal) number.",
       "params": [
-        "min",
-        "max"
+        "min:number",
+        "max:number"
       ]
     },
     "hex": {
       "description": "Returns a lowercase [hexadecimal](https://en.wikipedia.org/wiki/Hexadecimal) number.",
       "params": [
-        "min",
-        "max"
+        "min:number",
+        "max:number"
       ]
     },
     "bigInt": {
       "description": "Returns a [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#bigint_type) number.",
       "params": [
-        "min",
-        "max",
-        "multipleOf"
+        "min:number",
+        "max:number",
+        "multipleOf:number"
       ]
     },
     "romanNumeral": {
       "description": "Returns a roman numeral in String format.",
       "params": [
-        "min",
-        "max"
+        "min:number",
+        "max:number"
       ]
     }
   },
@@ -1366,16 +1367,16 @@
       "params": []
     },
     "recordLocator": {
-      "description": "Generates a random [record locator](https://en.wikipedia.org/wiki/Record_locator). Record locators",
+      "description": "Generates a random [record locator](https://en.wikipedia.org/wiki/Record_locator). Record locators.",
       "params": [
-        "allowNumerics",
-        "allowVisuallySimilarCharacters"
+        "allowNumerics:true | false",
+        "allowVisuallySimilarCharacters:true | false"
       ]
     },
     "seat": {
       "description": "Generates a random seat.",
       "params": [
-        "aircraftType"
+        "aircraftType:'narrowbody' | 'regional' | 'widebody'"
       ]
     },
     "aircraftType": {
@@ -1383,10 +1384,10 @@
       "params": []
     },
     "flightNumber": {
-      "description": "Returns a random flight number. Flight numbers are always 1 to 4 digits long. Sometimes they are",
+      "description": "Returns a random flight number. Flight numbers are always 1 to 4 digits long. Sometimes they are.",
       "params": [
-        "length",
-        "addLeadingZeros"
+        "length:number",
+        "addLeadingZeros:true | false"
       ]
     }
   }

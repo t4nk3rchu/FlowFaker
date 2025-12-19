@@ -4,12 +4,21 @@ A powerful Flow Launcher plugin that generates fake data using [FakerJS](https:/
 
 ## Features
 
-- **Latest FakerJS**: Built on `@faker-js/faker` v10.1.0+. Support all FakerJS methods.
-- **Dynamic Generation**: Access any FakerJS module and method.
+- **Latest FakerJS**: Built on `@faker-js/faker` v10.1.0+.
+- **Dynamic Generation**: Access any data-generating FakerJS module.
+- **Improved Filtering**: Real-time suggestions for categories and modules.
+- **Immediate Generation**: Instantly generate data on full command match.
 - **Localization**: Support for all FakerJS locales (e.g., `vi`, `de`, `ja`).
-- **Smart Parsing**: Handle arguments like ranges (`min:10 max:100`), booleans, and more.
+- **Smart Parsing**: Handle arguments like ranges, booleans, JSON objects/arrays, and **quoted strings** (e.g., `string:"hello world"`).
 - **Copy Options**: Context menu to copy results as newline-separated, comma-separated, or JSON.
-- **Custom Name Order**: specialized support for Vietnamese/Eastern name ordering.
+- **Custom Name Order**: Specialized support for Vietnamese/Eastern name ordering.
+
+## Supported Modules & Limitations
+
+This plugin is designed to work with all data-generating modules in FakerJS. However, some internal modules are excluded from the suggestion list for a cleaner experience:
+
+- **Excluded Categories**: `helpers`, `definitions`, `rawDefinitions`, `locales`.
+- **Note**: This plugin focuses on data generation. Helper methods that perform operations on existing data are not currently supported in the main interactive flow.
 
 ## Usage
 

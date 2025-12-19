@@ -1,5 +1,6 @@
 {
   "name": "flowfaker",
+  "version": "1.0.2",
   "type": "module",
   "scripts": {
     "build": "tsc"
