@@ -17,7 +17,7 @@ A powerful Flow Launcher plugin that generates fake data using [FakerJS](https:/
 
 This plugin is designed to work with all data-generating modules in FakerJS. However, some internal modules are excluded from the suggestion list for a cleaner experience:
 
-- **Excluded Categories**: `helpers`, `definitions`, `rawDefinitions`, `locales`.
+- **Excluded Categories**: `helpers`.
 - **Note**: This plugin focuses on data generation. Helper methods that perform operations on existing data are not currently supported in the main interactive flow.
 
 ## Usage
