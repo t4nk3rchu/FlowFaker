@@ -5,34 +5,38 @@ on:
   push:
     branches: [ main ]
     paths-ignore: 
-      - .github/workflows/*
+      - '.github/workflows/**'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Node.Js
-        uses: actions/setup-node@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '17.3.0'
-      - name: get version
+          node-version: '20'
+
+      - name: Get version
         id: version
         uses: notiz-dev/github-action-json-property@release
         with: 
           path: 'plugin.json'
           prop_path: 'Version'
-      - run: echo ${{steps.version.outputs.prop}} 
+
       - name: Install dependencies and build
         run: |
           npm install
           npm run build
           zip -r Flow.Launcher.Plugin.FakerJS.zip . -x '*.git*'
-      - name: Publish
-        uses: softprops/action-gh-release@v1
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
         with:
           files: 'Flow.Launcher.Plugin.FakerJS.zip'
-          tag_name: "v${{steps.version.outputs.prop}}"
+          tag_name: "v${{ steps.version.outputs.prop }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
