@@ -1,0 +1,5 @@
+node_modules/
+main.js
+metadata.json
+*.log
+.DS_Store

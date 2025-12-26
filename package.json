@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && node generate_metadata.js"
   },
   "dependencies": {
     "clipboardy": "^2.3.0",
