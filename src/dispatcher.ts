@@ -16,7 +16,9 @@ const LEGACY_ALIASES: Record<string, { module: string; method: string }> = {
   "random.boolean": { module: "datatype", method: "boolean" },
   "random.uuid4": { module: "string", method: "uuid" },
   "random.image": { module: "image", method: "urlPicsumPhotos" },
-  "phone.phone_number": { module: "phone", method: "number" }
+  "phone.phone_number": { module: "phone", method: "number" },
+  "person.name": { module: "person", method: "fullName" },
+  "person.fullname": { module: "person", method: "fullName" }
 };
 
 const METHOD_PARAM_MAP: Record<string, string[]> = {
@@ -29,11 +31,23 @@ const METHOD_PARAM_MAP: Record<string, string[]> = {
   "lorem.paragraphs": ["count:<n>"],
   "date.between": ["from:<date>", "to:<date>"],
   "string.numeric": ["length:<n>"],
-  "string.alphanumeric": ["length:<n>"]
+  "string.alphanumeric": ["length:<n>"],
+  "person.fullName": ["sex:<female|male>"],
+  "person.firstName": ["sex:<female|male>"],
+  "person.lastName": ["sex:<female|male>"],
+  "person.middleName": ["sex:<female|male>"]
 };
 
 export function toCamelCase(str: string): string {
   return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+}
+
+export function resolveTarget(moduleName: string, methodName: string): { module: string; method: string } {
+  const aliasKey = `${moduleName}.${methodName}`.toLowerCase();
+  return LEGACY_ALIASES[aliasKey] ?? {
+    module: toCamelCase(moduleName),
+    method: toCamelCase(methodName)
+  };
 }
 
 export function getAvailableModules(): string[] {
@@ -75,16 +89,23 @@ export function executeFaker(
   kwargs: Record<string, any> = {},
   locale?: string
 ): any {
-  const aliasKey = `${moduleName}.${methodName}`.toLowerCase();
-  const target = LEGACY_ALIASES[aliasKey] ?? {
-    module: toCamelCase(moduleName),
-    method: toCamelCase(methodName)
-  };
+  const target = resolveTarget(moduleName, methodName);
 
   const faker = getFaker(locale);
   const mod = (faker as any)[target.module];
   if (!mod) {
     throw new Error(`Faker module '${moduleName}' not found.`);
+  }
+
+  // Handle Vietnamese name ordering (lastName + firstName)
+  if (target.module === "person" && target.method === "fullName") {
+    const isVi = locale && (locale.toLowerCase().startsWith("vi") || locale.toLowerCase() === "vn");
+    if (isVi) {
+      const sex = kwargs?.sex;
+      const firstName = sex ? faker.person.firstName(sex) : faker.person.firstName();
+      const lastName = sex ? faker.person.lastName(sex) : faker.person.lastName();
+      return `${lastName} ${firstName}`;
+    }
   }
 
   const fn = mod[target.method];

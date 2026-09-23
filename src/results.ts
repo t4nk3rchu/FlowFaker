@@ -4,7 +4,8 @@ import {
   getAvailableModules,
   getModuleMethods,
   getMethodParameters,
-  executeFaker
+  executeFaker,
+  resolveTarget
 } from "./dispatcher";
 
 const ICON_PATH = "Images\\app.svg";
@@ -35,52 +36,53 @@ export function generateResults(q: ParsedQuery): FlowResult[] {
     return listMethods(resolvedModule, "");
   }
 
-  const methods = getModuleMethods(resolvedModule);
+  const target = resolveTarget(resolvedModule, methodName);
+  const methods = getModuleMethods(target.module);
   const matchedMethods = methods.filter((m) =>
-    m.toLowerCase().startsWith(methodName.toLowerCase())
+    m.toLowerCase().startsWith(target.method.toLowerCase())
   );
 
-  if (!hasTrailingSpace && matchedMethods.length > 0 && matchedMethods[0].toLowerCase() !== methodName.toLowerCase()) {
-    return listMethods(resolvedModule, methodName);
+  if (!hasTrailingSpace && matchedMethods.length > 0 && matchedMethods[0].toLowerCase() !== target.method.toLowerCase()) {
+    return listMethods(target.module, target.method);
   }
 
-  const resolvedMethod = matchedMethods[0] ?? methodName;
+  const resolvedMethod = matchedMethods[0] ?? target.method;
 
-  // 3. Method chosen -> Generate data
+  // 3. Method chosen -> Generate data (minimum 5 instances)
   try {
     const results: FlowResult[] = [];
-    const generatedValues: string[] = [];
+    const INSTANCE_COUNT = 5;
 
-    for (let i = 0; i < options.repeat; i++) {
-      const val = executeFaker(resolvedModule, resolvedMethod, options.kwargs, options.locale);
-      const strVal = typeof val === "object" ? JSON.stringify(val) : String(val);
-      generatedValues.push(strVal);
-    }
-
-    const outputText = generatedValues.join(options.newline ? "\n" : ", ");
-
-    results.push({
-      Title: outputText,
-      SubTitle: `${resolvedModule}.${resolvedMethod} (${options.repeat} item${options.repeat > 1 ? "s" : ""}) | Press Enter to copy`,
-      IcoPath: ICON_PATH,
-      AutoCompleteText: `fake ${resolvedModule} ${resolvedMethod} `,
-      JsonRPCAction: {
-        method: "Flow.Launcher.CopyToClipboard",
-        parameters: [outputText, false, true]
-      },
-      ContextData: {
-        module: resolvedModule,
-        method: resolvedMethod,
-        kwargs: options.kwargs,
-        locale: options.locale,
-        value: outputText
+    for (let inst = 0; inst < INSTANCE_COUNT; inst++) {
+      const generatedValues: string[] = [];
+      for (let i = 0; i < options.repeat; i++) {
+        const val = executeFaker(target.module, resolvedMethod, options.kwargs, options.locale);
+        const strVal = typeof val === "object" ? JSON.stringify(val) : String(val);
+        generatedValues.push(strVal);
       }
-    });
 
-    // 4. If trailing space present, show syntax helper cards
-    if (hasTrailingSpace) {
-      results.push(...buildSyntaxHelpers(resolvedModule, resolvedMethod, q.raw));
+      const outputText = generatedValues.join(options.newline ? "\n" : ", ");
+      results.push({
+        Title: outputText,
+        SubTitle: `${target.module}.${resolvedMethod}${options.repeat > 1 ? ` (${options.repeat} items)` : ""} | Press Enter to copy`,
+        IcoPath: ICON_PATH,
+        AutoCompleteText: `fake ${target.module} ${resolvedMethod} `,
+        JsonRPCAction: {
+          method: "Flow.Launcher.CopyToClipboard",
+          parameters: [outputText, false, true]
+        },
+        ContextData: {
+          module: target.module,
+          method: resolvedMethod,
+          kwargs: options.kwargs,
+          locale: options.locale,
+          value: outputText
+        }
+      });
     }
+
+    // 4. Always show syntax helper cards when method is chosen
+    results.push(...buildSyntaxHelpers(target.module, resolvedMethod, q.raw));
 
     return results;
   } catch (err: any) {
@@ -151,7 +153,9 @@ function listMethods(moduleName: string, filter: string): FlowResult[] {
 }
 
 function buildSyntaxHelpers(moduleName: string, methodName: string, rawQuery: string): FlowResult[] {
-  const baseQuery = rawQuery.endsWith(" ") ? rawQuery : rawQuery + " ";
+  const cleaned = rawQuery.replace(/^fake\s+/i, "").trim();
+  const baseQuery = `fake ${cleaned} `;
+  const rawLower = rawQuery.toLowerCase();
   const helpers: FlowResult[] = [];
 
   // Global options
@@ -159,7 +163,7 @@ function buildSyntaxHelpers(moduleName: string, methodName: string, rawQuery: st
     { key: "repeat:", hint: "repeat:<n> - Repeat count (e.g. repeat:5)" },
     { key: "newline:", hint: "newline:<true|false> - Format with newlines" },
     { key: "locale:", hint: "locale:<code> - Locale override (e.g. locale:vi, locale:ja)" }
-  ];
+  ].filter((opt) => !rawLower.includes(opt.key) && (opt.key !== "locale:" || !rawLower.includes("lang:")));
 
   for (const opt of globalOptions) {
     helpers.push({
@@ -180,6 +184,7 @@ function buildSyntaxHelpers(moduleName: string, methodName: string, rawQuery: st
   for (const param of methodParams) {
     const colonIdx = param.indexOf(":");
     const key = colonIdx > 0 ? param.slice(0, colonIdx + 1) : param;
+    if (rawLower.includes(key.toLowerCase())) continue;
     helpers.push({
       Title: key,
       SubTitle: `Parameter: ${param} | Press Tab/Enter to add`,
