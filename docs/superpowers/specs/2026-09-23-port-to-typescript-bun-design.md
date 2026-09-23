@@ -43,7 +43,7 @@ The plugin replaces the legacy Python 3.11 implementation with full dynamic supp
 * **Supported JSON-RPC Methods:**
   * `query`: Handles search box input and generates result cards.
   * `context_menu`: Returns secondary actions (e.g. repeat counts, copy variations).
-  * `copy_to_clipboard`: Writes generated values to clipboard via PowerShell or Flow Launcher clipboard action.
+  * `copy_to_clipboard`: Uses Flow Launcher's native `Flow.Launcher.CopyToClipboard` API (or standard Flow copy action) to avoid spawning unnecessary subprocesses.
 
 ---
 
