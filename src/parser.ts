@@ -1,0 +1,79 @@
+export interface ParsedOptions {
+  repeat: number;
+  newline: boolean;
+  locale?: string;
+  kwargs: Record<string, any>;
+}
+
+export interface ParsedQuery {
+  moduleName?: string;
+  methodName?: string;
+  options: ParsedOptions;
+  hasTrailingSpace: boolean;
+  raw: string;
+}
+
+export function parseQuery(rawQuery: string): ParsedQuery {
+  const raw = rawQuery || "";
+  const hasTrailingSpace = raw.endsWith(" ");
+  const trimmed = raw.trim();
+
+  if (!trimmed) {
+    return {
+      options: { repeat: 1, newline: false, kwargs: {} },
+      hasTrailingSpace,
+      raw
+    };
+  }
+
+  const tokens = trimmed.split(/\s+/);
+  let moduleName: string | undefined;
+  let methodName: string | undefined;
+  const kwargs: Record<string, any> = {};
+  let repeat = 1;
+  let newline = false;
+  let locale: string | undefined;
+
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+    const colonIdx = token.indexOf(":");
+
+    if (colonIdx > 0) {
+      const key = token.slice(0, colonIdx);
+      const valStr = token.slice(colonIdx + 1);
+
+      if (key === "repeat") {
+        const parsedRepeat = parseInt(valStr, 10);
+        repeat = Number.isInteger(parsedRepeat) && parsedRepeat > 0 ? Math.min(parsedRepeat, 100) : 1;
+      } else if (key === "newline") {
+        newline = valStr.toLowerCase() === "true" || valStr === "1";
+      } else if (key === "locale" || key === "lang") {
+        locale = valStr;
+      } else {
+        kwargs[key] = parseOptionValue(valStr);
+      }
+    } else {
+      if (moduleName === undefined) {
+        moduleName = token;
+      } else if (methodName === undefined) {
+        methodName = token;
+      }
+    }
+  }
+
+  return {
+    moduleName,
+    methodName,
+    options: { repeat, newline, locale, kwargs },
+    hasTrailingSpace,
+    raw
+  };
+}
+
+function parseOptionValue(val: string): any {
+  if (val.toLowerCase() === "true") return true;
+  if (val.toLowerCase() === "false") return false;
+  const num = Number(val);
+  if (!isNaN(num) && val.trim() !== "") return num;
+  return val;
+}
