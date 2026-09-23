@@ -106,7 +106,8 @@ function listModules(filter: string): FlowResult[] {
     AutoCompleteText: `fake ${m} `,
     JsonRPCAction: {
       method: "Flow.Launcher.ChangeQuery",
-      parameters: [`fake ${m} `, true]
+      parameters: [`fake ${m} `, true],
+      dontHideAfterAction: true
     }
   }));
 }
@@ -142,7 +143,8 @@ function listMethods(moduleName: string, filter: string): FlowResult[] {
       AutoCompleteText: `fake ${moduleName} ${m} `,
       JsonRPCAction: {
         method: "Flow.Launcher.ChangeQuery",
-        parameters: [`fake ${moduleName} ${m} `, true]
+        parameters: [`fake ${moduleName} ${m} `, true],
+        dontHideAfterAction: true
       }
     };
   });
@@ -167,7 +169,8 @@ function buildSyntaxHelpers(moduleName: string, methodName: string, rawQuery: st
       AutoCompleteText: `${baseQuery}${opt.key}`,
       JsonRPCAction: {
         method: "Flow.Launcher.ChangeQuery",
-        parameters: [`${baseQuery}${opt.key}`, true]
+        parameters: [`${baseQuery}${opt.key}`, true],
+        dontHideAfterAction: true
       }
     });
   }
@@ -184,7 +187,8 @@ function buildSyntaxHelpers(moduleName: string, methodName: string, rawQuery: st
       AutoCompleteText: `${baseQuery}${key}`,
       JsonRPCAction: {
         method: "Flow.Launcher.ChangeQuery",
-        parameters: [`${baseQuery}${key}`, true]
+        parameters: [`${baseQuery}${key}`, true],
+        dontHideAfterAction: true
       }
     });
   }
