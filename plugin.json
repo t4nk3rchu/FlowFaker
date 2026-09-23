@@ -1,12 +1,11 @@
 {
   "ID": "a6f2b0a6-513e-4078-8116-f33333333333",
-  "ActionKeyword": "faker",
+  "ActionKeyword": "fake",
   "Name": "Data Faker",
   "Description": "Generate realistic test data from Flow Launcher using Faker.",
   "Author": "t4nk3rchu",
-  "Version": "1.1.1",
-  "Language": "python",
-  "Website": "https://github.com/T4nk3rChu/data-faker",
-  "IcoPath": "Images\\app.svg",
-  "ExecuteFileName": "main.py"
+  "Version": "2.0.0",
+  "Language": "executable",
+  "ExecuteFileName": "bin\\data-faker.exe",
+  "IcoPath": "Images\\app.svg"
 }
