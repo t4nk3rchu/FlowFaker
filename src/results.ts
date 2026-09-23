@@ -50,13 +50,13 @@ export function generateResults(q: ParsedQuery): FlowResult[] {
 
   const resolvedMethod = matchedMethods[0] ?? target.method;
 
-  // 3. User typed a space after method/option OR typed an uncompleted option filter:
-  // Show ONLY syntax helper cards!
-  if (hasTrailingSpace || q.optionFilter) {
+  // 3. User typed an uncompleted option filter (e.g. "fake person fullName s"):
+  // Show ONLY matching syntax helper cards!
+  if (q.optionFilter) {
     return buildSyntaxHelpers(target.module, resolvedMethod, q.raw, q.optionFilter);
   }
 
-  // 4. Method chosen and no trailing space -> Generate 5 distinct data instances
+  // 4. Method chosen and no option filter -> Generate 5 distinct data instances followed by available parameter helpers
   try {
     const results: FlowResult[] = [];
     const INSTANCE_COUNT = 5;
@@ -78,7 +78,7 @@ export function generateResults(q: ParsedQuery): FlowResult[] {
         Title: displayTitle,
         SubTitle: `${target.module}.${resolvedMethod}${options.repeat > 1 ? ` (${options.repeat} items)` : ""} | Press Enter to copy`,
         IcoPath: ICON_PATH,
-        AutoCompleteText: `fake ${target.module} ${resolvedMethod} `,
+        AutoCompleteText: `fake ${target.module} ${resolvedMethod}`,
         JsonRPCAction: {
           method: "Flow.Launcher.CopyToClipboard",
           parameters: [outputText, false, true]
@@ -92,6 +92,9 @@ export function generateResults(q: ParsedQuery): FlowResult[] {
         }
       });
     }
+
+    // Append syntax helpers so the user sees all available options
+    results.push(...buildSyntaxHelpers(target.module, resolvedMethod, q.raw));
 
     return results;
   } catch (err: any) {
@@ -158,10 +161,10 @@ function listMethods(moduleName: string, filter: string): FlowResult[] {
       Title: `${moduleName}.${m}`,
       SubTitle: subTitle,
       IcoPath: ICON_PATH,
-      AutoCompleteText: `fake ${moduleName} ${m} `,
+      AutoCompleteText: `fake ${moduleName} ${m}`,
       JsonRPCAction: {
         method: "Flow.Launcher.ChangeQuery",
-        parameters: [`fake ${moduleName} ${m} `, true],
+        parameters: [`fake ${moduleName} ${m}`, true],
         dontHideAfterAction: true
       }
     };
@@ -183,6 +186,27 @@ function buildSyntaxHelpers(
   const filterLower = (filter ?? "").toLowerCase();
   const helpers: FlowResult[] = [];
 
+  // Method-specific options first
+  const methodParams = getMethodParameters(moduleName, methodName);
+  for (const param of methodParams) {
+    const keyWithColon = `${param.key}:`;
+    if (rawLower.includes(keyWithColon.toLowerCase())) continue;
+    if (filterLower && !param.key.toLowerCase().startsWith(filterLower) && !keyWithColon.toLowerCase().startsWith(filterLower)) {
+      continue;
+    }
+    helpers.push({
+      Title: keyWithColon,
+      SubTitle: `${param.hint}${param.desc ? ` - ${param.desc}` : ""} | Press Tab/Enter to add`,
+      IcoPath: ICON_PATH,
+      AutoCompleteText: `${baseQuery}${keyWithColon}`,
+      JsonRPCAction: {
+        method: "Flow.Launcher.ChangeQuery",
+        parameters: [`${baseQuery}${keyWithColon}`, true],
+        dontHideAfterAction: true
+      }
+    });
+  }
+
   // Global options
   const globalOptions = [
     { key: "repeat:", hint: "repeat:<n>", desc: "Generate multiple items (e.g. repeat:5)" },
@@ -200,27 +224,6 @@ function buildSyntaxHelpers(
       JsonRPCAction: {
         method: "Flow.Launcher.ChangeQuery",
         parameters: [`${baseQuery}${opt.key}`, true],
-        dontHideAfterAction: true
-      }
-    });
-  }
-
-  // Method-specific options
-  const methodParams = getMethodParameters(moduleName, methodName);
-  for (const param of methodParams) {
-    const keyWithColon = `${param.key}:`;
-    if (rawLower.includes(keyWithColon.toLowerCase())) continue;
-    if (filterLower && !param.key.toLowerCase().startsWith(filterLower) && !keyWithColon.toLowerCase().startsWith(filterLower)) {
-      continue;
-    }
-    helpers.push({
-      Title: keyWithColon,
-      SubTitle: `${param.hint}${param.desc ? ` - ${param.desc}` : ""} | Press Tab/Enter to add`,
-      IcoPath: ICON_PATH,
-      AutoCompleteText: `${baseQuery}${keyWithColon}`,
-      JsonRPCAction: {
-        method: "Flow.Launcher.ChangeQuery",
-        parameters: [`${baseQuery}${keyWithColon}`, true],
         dontHideAfterAction: true
       }
     });

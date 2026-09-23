@@ -14,36 +14,35 @@ test("returns method suggestions when module is chosen with trailing space", () 
   const q = parseQuery("airline ");
   const res = generateResults(q);
   expect(res.length).toBeGreaterThan(0);
-  expect(res[0].AutoCompleteText).toMatch(/^fake airline \w+ $/);
+  expect(res[0].AutoCompleteText).toMatch(/^fake airline \w+$/);
 });
 
-test("returns 5 generated value cards when method has no trailing space", () => {
+test("returns 5 generated value cards followed by syntax helpers when method is chosen", () => {
   const q1 = parseQuery("number int");
   const res1 = generateResults(q1);
-  expect(res1.length).toBe(5);
+  expect(res1.length).toBeGreaterThanOrEqual(8);
   for (let i = 0; i < 5; i++) {
     expect(res1[i].JsonRPCAction?.method).toBe("Flow.Launcher.CopyToClipboard");
     expect(res1[i].SubTitle).toContain("number.int");
   }
+  const helperTitles = res1.slice(5).map((r) => r.Title);
+  expect(helperTitles).toContain("min:");
+  expect(helperTitles).toContain("repeat:");
 });
 
-test("returns only syntax helper cards when method has a trailing space", () => {
-  const q2 = parseQuery("number int ");
+test("returns only matching syntax helper cards when option filter is typed", () => {
+  const q2 = parseQuery("person fullName s");
   const res2 = generateResults(q2);
-  expect(res2.length).toBeGreaterThanOrEqual(3);
-  for (const item of res2) {
-    expect(item.JsonRPCAction?.method).toBe("Flow.Launcher.ChangeQuery");
-    expect(item.JsonRPCAction?.dontHideAfterAction).toBe(true);
-  }
-  const titles = res2.map((r) => r.Title);
-  expect(titles.some((t) => t.includes("repeat:"))).toBe(true);
-  expect(titles.some((t) => t.includes("min:"))).toBe(true);
+  expect(res2.length).toBe(1);
+  expect(res2[0].Title).toBe("sex:");
+  expect(res2[0].JsonRPCAction?.method).toBe("Flow.Launcher.ChangeQuery");
+  expect(res2[0].JsonRPCAction?.dontHideAfterAction).toBe(true);
 });
 
 test("sanitizes multiline output in Title while preserving raw in clipboard action", () => {
   const q = parseQuery("lorem lines");
   const res = generateResults(q);
-  expect(res.length).toBe(5);
+  expect(res.length).toBeGreaterThanOrEqual(5);
   expect(res[0].Title).not.toContain("\n");
   const clipboardText = res[0].JsonRPCAction?.parameters?.[0] as string;
   expect(typeof clipboardText).toBe("string");
