@@ -41,11 +41,15 @@ test("handles legacy aliases", () => {
 
 test("returns method parameters metadata", () => {
   const params = getMethodParameters("number", "int");
-  expect(params).toContain("min:<n>");
-  expect(params).toContain("max:<n>");
+  expect(params.some((p) => p.key === "min" && p.hint === "min:<n>")).toBe(true);
+  expect(params.some((p) => p.key === "max" && p.hint === "max:<n>")).toBe(true);
 
   const personParams = getMethodParameters("person", "fullName");
-  expect(personParams).toContain("sex:<female|male>");
+  expect(personParams.some((p) => p.key === "sex")).toBe(true);
+
+  const loremParams = getMethodParameters("lorem", "lines");
+  expect(loremParams.some((p) => p.key === "lineCount")).toBe(true);
+  expect(loremParams.some((p) => p.key === "min")).toBe(true);
 });
 
 test("formats Vietnamese person fullName as lastName firstName", () => {

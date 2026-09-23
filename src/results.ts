@@ -1,10 +1,11 @@
 import type { FlowResult } from "./types";
 import type { ParsedQuery } from "./parser";
 import {
-  getAvailableModules,
-  getModuleMethods,
-  getMethodParameters,
   executeFaker,
+  getAvailableModules,
+  getMethodParameters,
+  getMethodDescription,
+  getModuleMethods,
   resolveTarget
 } from "./dispatcher";
 
@@ -42,13 +43,20 @@ export function generateResults(q: ParsedQuery): FlowResult[] {
     m.toLowerCase().startsWith(target.method.toLowerCase())
   );
 
+  // Partial method name (e.g. "fake person full"): show matching method suggestions
   if (!hasTrailingSpace && matchedMethods.length > 0 && matchedMethods[0].toLowerCase() !== target.method.toLowerCase()) {
     return listMethods(target.module, target.method);
   }
 
   const resolvedMethod = matchedMethods[0] ?? target.method;
 
-  // 3. Method chosen -> Generate data (minimum 5 instances)
+  // 3. User typed a space after method/option OR typed an uncompleted option filter:
+  // Show ONLY syntax helper cards!
+  if (hasTrailingSpace || q.optionFilter) {
+    return buildSyntaxHelpers(target.module, resolvedMethod, q.raw, q.optionFilter);
+  }
+
+  // 4. Method chosen and no trailing space -> Generate 5 distinct data instances
   try {
     const results: FlowResult[] = [];
     const INSTANCE_COUNT = 5;
@@ -62,8 +70,12 @@ export function generateResults(q: ParsedQuery): FlowResult[] {
       }
 
       const outputText = generatedValues.join(options.newline ? "\n" : ", ");
+      const displayTitle = outputText.includes("\n")
+        ? outputText.replace(/\r?\n/g, " ↵ ")
+        : outputText;
+
       results.push({
-        Title: outputText,
+        Title: displayTitle,
         SubTitle: `${target.module}.${resolvedMethod}${options.repeat > 1 ? ` (${options.repeat} items)` : ""} | Press Enter to copy`,
         IcoPath: ICON_PATH,
         AutoCompleteText: `fake ${target.module} ${resolvedMethod} `,
@@ -80,9 +92,6 @@ export function generateResults(q: ParsedQuery): FlowResult[] {
         }
       });
     }
-
-    // 4. Always show syntax helper cards when method is chosen
-    results.push(...buildSyntaxHelpers(target.module, resolvedMethod, q.raw));
 
     return results;
   } catch (err: any) {
@@ -130,17 +139,24 @@ function listMethods(moduleName: string, filter: string): FlowResult[] {
   }
 
   return methods.map((m) => {
-    let sample = "";
+    let samplePreview = "";
     try {
       const v = executeFaker(moduleName, m);
-      sample = typeof v === "object" ? JSON.stringify(v) : String(v);
+      const rawStr = typeof v === "object" ? JSON.stringify(v) : String(v);
+      const clean = rawStr.replace(/[\r\n]+/g, " ").trim();
+      samplePreview = clean.length > 70 ? clean.slice(0, 67) + "..." : clean;
     } catch {
-      sample = "Preview unavailable";
+      samplePreview = "";
     }
+
+    const description = getMethodDescription(moduleName, m);
+    const subTitle = samplePreview
+      ? `Sample: ${samplePreview} | Press Tab to select`
+      : `${description} | Press Tab to select`;
 
     return {
       Title: `${moduleName}.${m}`,
-      SubTitle: `Sample: ${sample} | Press Tab to autocomplete`,
+      SubTitle: subTitle,
       IcoPath: ICON_PATH,
       AutoCompleteText: `fake ${moduleName} ${m} `,
       JsonRPCAction: {
@@ -152,23 +168,33 @@ function listMethods(moduleName: string, filter: string): FlowResult[] {
   });
 }
 
-function buildSyntaxHelpers(moduleName: string, methodName: string, rawQuery: string): FlowResult[] {
-  const cleaned = rawQuery.replace(/^fake\s+/i, "").trim();
-  const baseQuery = `fake ${cleaned} `;
+function buildSyntaxHelpers(
+  moduleName: string,
+  methodName: string,
+  rawQuery: string,
+  filter?: string
+): FlowResult[] {
+  const tokens = rawQuery.replace(/^fake\s+/i, "").trim().split(/\s+/);
+  if (filter && tokens.length > 0 && tokens[tokens.length - 1] === filter) {
+    tokens.pop();
+  }
+  const baseQuery = `fake ${tokens.join(" ")} `;
   const rawLower = rawQuery.toLowerCase();
+  const filterLower = (filter ?? "").toLowerCase();
   const helpers: FlowResult[] = [];
 
   // Global options
   const globalOptions = [
-    { key: "repeat:", hint: "repeat:<n> - Repeat count (e.g. repeat:5)" },
-    { key: "newline:", hint: "newline:<true|false> - Format with newlines" },
-    { key: "locale:", hint: "locale:<code> - Locale override (e.g. locale:vi, locale:ja)" }
+    { key: "repeat:", hint: "repeat:<n>", desc: "Generate multiple items (e.g. repeat:5)" },
+    { key: "newline:", hint: "newline:<true|false>", desc: "Separate repeated items with newlines" },
+    { key: "locale:", hint: "locale:<code>", desc: "Locale override (e.g. locale:vi, locale:ja)" }
   ].filter((opt) => !rawLower.includes(opt.key) && (opt.key !== "locale:" || !rawLower.includes("lang:")));
 
   for (const opt of globalOptions) {
+    if (filterLower && !opt.key.toLowerCase().startsWith(filterLower)) continue;
     helpers.push({
       Title: opt.key,
-      SubTitle: `${opt.hint} | Press Tab/Enter to add`,
+      SubTitle: `${opt.hint} - ${opt.desc} | Press Tab/Enter to add`,
       IcoPath: ICON_PATH,
       AutoCompleteText: `${baseQuery}${opt.key}`,
       JsonRPCAction: {
@@ -182,17 +208,19 @@ function buildSyntaxHelpers(moduleName: string, methodName: string, rawQuery: st
   // Method-specific options
   const methodParams = getMethodParameters(moduleName, methodName);
   for (const param of methodParams) {
-    const colonIdx = param.indexOf(":");
-    const key = colonIdx > 0 ? param.slice(0, colonIdx + 1) : param;
-    if (rawLower.includes(key.toLowerCase())) continue;
+    const keyWithColon = `${param.key}:`;
+    if (rawLower.includes(keyWithColon.toLowerCase())) continue;
+    if (filterLower && !param.key.toLowerCase().startsWith(filterLower) && !keyWithColon.toLowerCase().startsWith(filterLower)) {
+      continue;
+    }
     helpers.push({
-      Title: key,
-      SubTitle: `Parameter: ${param} | Press Tab/Enter to add`,
+      Title: keyWithColon,
+      SubTitle: `${param.hint}${param.desc ? ` - ${param.desc}` : ""} | Press Tab/Enter to add`,
       IcoPath: ICON_PATH,
-      AutoCompleteText: `${baseQuery}${key}`,
+      AutoCompleteText: `${baseQuery}${keyWithColon}`,
       JsonRPCAction: {
         method: "Flow.Launcher.ChangeQuery",
-        parameters: [`${baseQuery}${key}`, true],
+        parameters: [`${baseQuery}${keyWithColon}`, true],
         dontHideAfterAction: true
       }
     });

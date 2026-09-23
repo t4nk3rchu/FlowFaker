@@ -2,6 +2,10 @@ import { parseQuery } from "./parser";
 import { generateResults, generateContextMenu } from "./results";
 import { formatFlowResponse, type FlowResult, type JsonRPCRequest } from "./types";
 
+// Suppress library warnings from polluting stderr, which crashes Flow Launcher
+process.stderr.write = (() => true) as any;
+console.warn = () => {};
+
 function main() {
   const rawArg = process.argv[2];
   if (!rawArg) {

@@ -21,22 +21,11 @@ const LEGACY_ALIASES: Record<string, { module: string; method: string }> = {
   "person.fullname": { module: "person", method: "fullName" }
 };
 
-const METHOD_PARAM_MAP: Record<string, string[]> = {
-  "number.int": ["min:<n>", "max:<n>"],
-  "number.float": ["min:<n>", "max:<n>", "fractionDigits:<n>"],
-  "internet.email": ["firstName:<str>", "lastName:<str>", "provider:<str>"],
-  "commerce.price": ["min:<n>", "max:<n>", "dec:<n>", "symbol:<str>"],
-  "lorem.words": ["count:<n>"],
-  "lorem.sentences": ["count:<n>"],
-  "lorem.paragraphs": ["count:<n>"],
-  "date.between": ["from:<date>", "to:<date>"],
-  "string.numeric": ["length:<n>"],
-  "string.alphanumeric": ["length:<n>"],
-  "person.fullName": ["sex:<female|male>"],
-  "person.firstName": ["sex:<female|male>"],
-  "person.lastName": ["sex:<female|male>"],
-  "person.middleName": ["sex:<female|male>"]
-};
+import { METHOD_PARAM_MAP, METHOD_DESCRIPTIONS, type MethodParamInfo } from "./param-metadata";
+
+const DEPRECATED_METHODS = new Set([
+  "urlLoremFlickr"
+]);
 
 export function toCamelCase(str: string): string {
   return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
@@ -72,15 +61,22 @@ export function getModuleMethods(moduleName: string): string[] {
   if (!mod || typeof mod !== "object") return [];
 
   return Object.keys(mod)
-    .filter((key) => typeof mod[key] === "function" && !key.startsWith("_"))
+    .filter((key) => typeof mod[key] === "function" && !key.startsWith("_") && !DEPRECATED_METHODS.has(key))
     .sort();
 }
 
-export function getMethodParameters(moduleName: string, methodName: string): string[] {
+export function getMethodParameters(moduleName: string, methodName: string): MethodParamInfo[] {
   const normModule = toCamelCase(moduleName);
   const normMethod = toCamelCase(methodName);
   const key = `${normModule}.${normMethod}`;
   return METHOD_PARAM_MAP[key] ?? [];
+}
+
+export function getMethodDescription(moduleName: string, methodName: string): string {
+  const normModule = toCamelCase(moduleName);
+  const normMethod = toCamelCase(methodName);
+  const key = `${normModule}.${normMethod}`;
+  return METHOD_DESCRIPTIONS[key] ?? `Generate ${moduleName} ${methodName} data`;
 }
 
 export function executeFaker(
@@ -111,6 +107,49 @@ export function executeFaker(
   const fn = mod[target.method];
   if (typeof fn !== "function") {
     throw new Error(`Method '${methodName}' not found on module '${moduleName}'.`);
+  }
+
+  // Positional and shape adapters for specialized Faker methods
+  if (target.module === "lorem") {
+    if (target.method === "lines") {
+      if (kwargs.min !== undefined || kwargs.max !== undefined) {
+        return mod.lines({ min: kwargs.min ?? 1, max: kwargs.max ?? 5 });
+      }
+      if (kwargs.lineCount !== undefined || kwargs.count !== undefined) {
+        return mod.lines(Number(kwargs.lineCount ?? kwargs.count));
+      }
+    } else if (target.method === "words") {
+      if (kwargs.min !== undefined || kwargs.max !== undefined) {
+        return mod.words({ min: kwargs.min ?? 1, max: kwargs.max ?? 5 });
+      }
+      if (kwargs.wordCount !== undefined || kwargs.count !== undefined || kwargs.num !== undefined) {
+        return mod.words(Number(kwargs.wordCount ?? kwargs.count ?? kwargs.num));
+      }
+    } else if (target.method === "sentence") {
+      if (kwargs.wordCount !== undefined || kwargs.count !== undefined) {
+        return mod.sentence(Number(kwargs.wordCount ?? kwargs.count));
+      }
+    } else if (target.method === "sentences") {
+      const count = kwargs.sentenceCount ?? kwargs.count;
+      return mod.sentences(count !== undefined ? Number(count) : undefined, kwargs.separator);
+    } else if (target.method === "paragraph") {
+      if (kwargs.sentenceCount !== undefined || kwargs.count !== undefined) {
+        return mod.paragraph(Number(kwargs.sentenceCount ?? kwargs.count));
+      }
+    } else if (target.method === "paragraphs") {
+      const count = kwargs.paragraphCount ?? kwargs.count;
+      return mod.paragraphs(count !== undefined ? Number(count) : undefined, kwargs.separator);
+    } else if (target.method === "slug") {
+      if (kwargs.wordCount !== undefined || kwargs.count !== undefined) {
+        return mod.slug(Number(kwargs.wordCount ?? kwargs.count));
+      }
+    }
+  }
+
+  if (target.module === "phone" && target.method === "number") {
+    if (kwargs.format) {
+      return mod.number(kwargs.format);
+    }
   }
 
   const hasArgs = Object.keys(kwargs).length > 0;

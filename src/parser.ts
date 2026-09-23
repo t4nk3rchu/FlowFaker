@@ -8,6 +8,7 @@ export interface ParsedOptions {
 export interface ParsedQuery {
   moduleName?: string;
   methodName?: string;
+  optionFilter?: string;
   options: ParsedOptions;
   hasTrailingSpace: boolean;
   raw: string;
@@ -29,6 +30,7 @@ export function parseQuery(rawQuery: string): ParsedQuery {
   const tokens = trimmed.split(/\s+/);
   let moduleName: string | undefined;
   let methodName: string | undefined;
+  let optionFilter: string | undefined;
   const kwargs: Record<string, any> = {};
   let repeat = 1;
   let newline = false;
@@ -57,6 +59,8 @@ export function parseQuery(rawQuery: string): ParsedQuery {
         moduleName = token;
       } else if (methodName === undefined) {
         methodName = token;
+      } else {
+        optionFilter = token;
       }
     }
   }
@@ -64,6 +68,7 @@ export function parseQuery(rawQuery: string): ParsedQuery {
   return {
     moduleName,
     methodName,
+    optionFilter,
     options: { repeat, newline, locale, kwargs },
     hasTrailingSpace,
     raw
