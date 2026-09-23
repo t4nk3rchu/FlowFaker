@@ -123,6 +123,23 @@ fake [module] [method] [options...]
 ### 5.3 Method-Specific Options
 Method options (e.g., `min:10 max:100 symbol:$`) are parsed into typed key-value pairs and passed directly to Faker methods.
 
+### 5.4 Dynamic Syntax Helpers & Option Autocomplete
+When a user types a method followed by a space (e.g., `fake person fullName ` or `fake number int `), the plugin dynamically displays:
+1. **Primary Generated Preview Card(s)** at the top.
+2. **Interactive Syntax Helper Cards** below the preview:
+   * **Global Options**:
+     * `repeat:<n>` — "Repeat generation N times (e.g., repeat:5)"
+     * `newline:<true|false>` — "Format output with newlines (e.g., newline:true)"
+     * `locale:<code>` — "Override locale (e.g., locale:vi, locale:ja)"
+   * **Method-Specific Options** (introspected per method):
+     * e.g., for `number int`: `min:<n>`, `max:<n>`
+     * e.g., for `internet email`: `firstName:<str>`, `lastName:<str>`, `provider:<domain>`
+     * e.g., for `commerce price`: `min:<n>`, `max:<n>`, `dec:<n>`, `symbol:<str>`
+     * e.g., for `lorem words`: `count:<n>`
+   * **Interaction Behavior**:
+     * Each helper card has `AutoCompleteText: "<currentQuery><optionKey>:"`
+     * Selecting a helper card and pressing **`Tab`** or **`Enter`** (via `ChangeQuery`) automatically appends the option key (e.g. `repeat:`) to the query input, allowing smooth keyboard-only parameter configuration.
+
 ---
 
 ## 6. Error Handling & Resilience
