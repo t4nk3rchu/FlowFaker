@@ -9,20 +9,8 @@ export interface FlowResult {
   SubTitle?: string;
   IcoPath?: string;
   AutoCompleteText?: string;
+  // Ghost text Flow draws after the cursor when this result is selected (action keyword is prepended by Flow)
+  QuerySuggestionText?: string;
   JsonRPCAction?: JsonRPCAction;
   ContextData?: any;
-}
-
-export interface JsonRPCRequest {
-  id?: number | string;
-  method: string;
-  parameters: any[];
-}
-
-export interface JsonRPCResponse {
-  result: FlowResult[];
-}
-
-export function formatFlowResponse(results: FlowResult[]): string {
-  return JSON.stringify({ result: results });
 }

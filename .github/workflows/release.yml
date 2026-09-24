@@ -20,17 +20,23 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Build Node bundle
+        run: bun run build
+
+      # e2e tests run the built bundle under Node, so build first
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
       - name: Run test suite
         run: bun test
-
-      - name: Compile standalone executable
-        run: bun run build
 
       - name: Package Release ZIP
         shell: pwsh
         run: |
           $zipName = "Data-Faker-Flow-Launcher-$($env:GITHUB_REF_NAME).zip"
-          Compress-Archive -Path bin\data-faker.exe, Images, plugin.json -DestinationPath $zipName
+          Compress-Archive -Path dist, Images, plugin.json -DestinationPath $zipName
           echo "ZIP_NAME=$zipName" >> $env:GITHUB_ENV
 
       - name: Publish GitHub Release

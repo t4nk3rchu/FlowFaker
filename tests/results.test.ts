@@ -17,24 +17,29 @@ test("returns method suggestions when module is chosen with trailing space", () 
   expect(res[0].AutoCompleteText).toMatch(/^fake airline \w+$/);
 });
 
-test("returns 5 generated value cards followed by syntax helpers when method is chosen", () => {
-  const q1 = parseQuery("number int");
-  const res1 = generateResults(q1);
-  expect(res1.length).toBeGreaterThanOrEqual(8);
-  for (let i = 0; i < 5; i++) {
-    expect(res1[i].JsonRPCAction?.method).toBe("Flow.Launcher.CopyToClipboard");
-    expect(res1[i].SubTitle).toContain("number.int");
+test("returns only 5 generated value cards when method is chosen", () => {
+  const res1 = generateResults(parseQuery("number int"));
+  expect(res1.length).toBe(5);
+  for (const r of res1) {
+    expect(r.JsonRPCAction?.method).toBe("Flow.Launcher.CopyToClipboard");
+    expect(r.SubTitle).toContain("number.int");
   }
-  const helperTitles = res1.slice(5).map((r) => r.Title);
-  expect(helperTitles).toContain("min:");
-  expect(helperTitles).toContain("repeat:");
+});
+
+test("returns only syntax helpers (method + global) on trailing space after method", () => {
+  const res = generateResults(parseQuery("number int "));
+  expect(res.every((r) => r.JsonRPCAction?.method === "Flow.Launcher.ChangeQuery")).toBe(true);
+  const titles = res.map((r) => r.Title);
+  expect(titles).toContain("min:  [method]");
+  expect(titles).toContain("repeat:  [global]");
+  expect(titles).toContain("locale:  [global]");
 });
 
 test("returns only matching syntax helper cards when option filter is typed", () => {
   const q2 = parseQuery("person fullName s");
   const res2 = generateResults(q2);
   expect(res2.length).toBe(1);
-  expect(res2[0].Title).toBe("sex:");
+  expect(res2[0].Title).toBe("sex:  [method]");
   expect(res2[0].JsonRPCAction?.method).toBe("Flow.Launcher.ChangeQuery");
   expect(res2[0].JsonRPCAction?.dontHideAfterAction).toBe(true);
 });
@@ -70,4 +75,31 @@ test("generateContextMenu returns copy and repeat actions", () => {
   expect(menu.length).toBe(5);
   expect(menu[0].Title).toBe("Copy current item to clipboard");
   expect(menu[1].Title).toContain("Generate & Copy 5 items");
+});
+
+test("typing a parameter value lists accepted values with ghost text", () => {
+  const res = generateResults(parseQuery("date birthdate mode:"));
+  expect(res.map((r) => r.Title)).toEqual(["mode:age", "mode:year"]);
+  expect(res[0].QuerySuggestionText).toBe("date birthdate mode:age|year");
+  expect(res[1].QuerySuggestionText).toBe("date birthdate mode:year");
+  expect(res[0].AutoCompleteText).toBe("fake date birthdate mode:age");
+
+  expect(generateResults(parseQuery("date birthdate mode:y")).map((r) => r.QuerySuggestionText)).toEqual([
+    "date birthdate mode:year"
+  ]);
+  expect(generateResults(parseQuery("number int newline:"))[0].QuerySuggestionText).toBe("number int newline:true|false");
+  expect(generateResults(parseQuery("number int min:"))[0].QuerySuggestionText).toBe("number int min:<n>");
+});
+
+test("a complete parameter value generates data again", () => {
+  for (const q of ["date birthdate mode:year", "number int min:5"]) {
+    const res = generateResults(parseQuery(q));
+    expect(res).toHaveLength(5);
+    expect(res[0].JsonRPCAction?.method).toBe("Flow.Launcher.CopyToClipboard");
+  }
+});
+
+test("dates are rendered without JSON quotes", () => {
+  const res = generateResults(parseQuery("date between from:2002-01-01 to:2002-02-01"));
+  expect(res[0].Title).toMatch(/^2002-0[12]-\d\dT[\d:.]+Z$/);
 });

@@ -30,15 +30,6 @@ test("executes methods with camelCase and snake_case", () => {
   expect(res2.length).toBeGreaterThan(0);
 });
 
-test("handles legacy aliases", () => {
-  const num = executeFaker("random", "number");
-  expect(typeof num).toBe("number");
-
-  const name = executeFaker("person", "name");
-  expect(typeof name).toBe("string");
-  expect(name.length).toBeGreaterThan(0);
-});
-
 test("returns method parameters metadata", () => {
   const params = getMethodParameters("number", "int");
   expect(params.some((p) => p.key === "min" && p.hint === "min:<n>")).toBe(true);
@@ -58,9 +49,4 @@ test("formats Vietnamese person fullName as lastName firstName", () => {
     const parts = fullName.split(" ");
     expect(parts.length).toBeGreaterThanOrEqual(2);
   }
-
-  // Also test person.name alias with vi locale
-  const aliasName = executeFaker("person", "name", {}, "vi");
-  expect(typeof aliasName).toBe("string");
-  expect(aliasName.split(" ").length).toBeGreaterThanOrEqual(2);
 });

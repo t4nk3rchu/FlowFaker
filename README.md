@@ -1,239 +1,81 @@
 # Data Faker Flow Launcher Plugin
 
-Generate realistic test data directly from Flow Launcher using the Faker library (with a little tweak made specifically for Vietnamese locale). Quickly produce names, dates, finance details, internet data, locations, lorem text, phone numbers, random values (UUID/EAN/images), and vehicle identifiers with localized output, copy options, and command validation.
+Generate realistic test data from Flow Launcher with [Faker](https://fakerjs.dev), without leaving your keyboard. Every Faker module and method is available, with inline parameter hints, locale switching, and one-keystroke copy.
 
-## Description
-- Purpose: Accelerate development and testing by generating fake data from your launcher without context switching.
-- Core Functionality: Category-based commands with options; returns multiple results; supports locale override and copy formats.
-- Key Features:
-  - Rich command set: person, date, finance, internet, location, lorem, phone, random, vehicle
-  - Locale support via `lang:{locale}` (e.g., `vi_VN`, `en_US`)
-  - Better support for Vietnamese locale
-  - Validation prevents incomplete commands from showing results
-  - Copy options: newline, comma, space, JSON
-- Supported Platforms: Flow Launcher 2.x on Windows; runtime built on Python 3.11.
-- Dependencies: `faker`, `pyflowlauncher`, `pyperclip`, `Pillow` (bundled into `lib` via packaging).
+## Requirements
+- Flow Launcher 2.x on Windows
+- Node.js. The plugin runs as a Flow Launcher `JavaScript_V2` plugin. The first time it loads, Flow Launcher offers to download Node.js or lets you pick an existing `node.exe`; you can change it later in Flow Launcher's settings.
 
 ## Installation
-- Download `Flow.Launcher.Plugin.DataFaker.zip` from Releases
-- Extract pasted the unzip folder to the directory in `FlowLauncher\Plugins`.
-- Ensure Flow Launcher 2.x is installed.
+1. Download `Data-Faker-Flow-Launcher-<version>.zip` from [Releases](https://github.com/t4nk3rchu/Data-Faker-Flow-Launcher-Plugin/releases).
+2. Extract it into a new folder under `%APPDATA%\FlowLauncher\Plugins\`.
+3. Restart Flow Launcher.
 
-## Configuration
-- Common options (apply to most commands):
-  - `lang:{locale}`: Override locale (e.g., `vi_VN`, `en_US`)
-  - `repeat:{n}`: Generate multiple values per result line
-- Copy options: Press right arrow on a result to select newline, comma, space, or JSON copy.
+## Usage
+The action keyword is `fake`.
 
-## Usage Examples
-- `faker date anytime`
-- `faker date between from:2002-01-01 to:2002-02-01`
-- `faker internet email first:Jeanne last:Doe`
-- `faker random imageUrl width:320 height:240`
-- `faker random uuid4`
-- `faker vehicle vin`
-- `faker person name last middle first lang:vi_VN`
-- `faker lorem sentence length:8 repeat:3 newline`
+| You type | You get |
+|---|---|
+| `fake ` | All Faker modules |
+| `fake person ` | The module's methods, each with a live sample |
+| `fake person fullName` | 5 generated values. Enter copies one |
+| `fake person fullName ` (trailing space) | Parameter helpers for that method, no generated values |
+| `fake person fullName s` | Only the helpers starting with `s` |
 
-## Command Reference
+Helpers are tagged by where the parameter comes from:
+- `sex:  [method]`: a parameter of the Faker method itself, read from Faker's docs.
+- `repeat:  [global]`: a plugin option that works on every method.
 
-### date
-- `faker date anytime`
-  - Description: Random date
-  - Parameters: none
-  - Example: `faker date anytime`
-  - Output: Single ISO date string
+Press Tab or Enter on a helper to add it to the query, then type its value.
 
-- `faker date between from:YYYY-MM-DD|today to:YYYY-MM-DD|today`
-  - Description: Date between absolute bounds
-  - Required: `from`, `to` (use `today` or ISO `YYYY-MM-DD`)
-  - Example: `faker date between from:2002-01-01 to:2002-02-01`
-  - Output: Date within range
+### Global parameters
+- `repeat:<n>`: put several values in each result (max 100).
+- `newline:true`: separate repeated values with newlines instead of `, `.
+- `locale:<code>` (or `lang:<code>`): `en`, `vi`, `ja`, `zh_cn`, `zh_tw`, `de`, `fr`, `es`, `ko`, `it`, `ru`, `pt_br`. Region forms like `vi_VN` and `pt-BR` also work.
 
-- `faker date between from:-{n}y|M|d to:+{n}y|M|d`
-  - Description: Date between relative offsets (years/months/days)
-  - Required: `from`, `to` (e.g., `-30y`, `+10d`)
-  - Example: `faker date between from:-2y to:+1y`
-  - Output: Date within relative range
+### Method parameters
+Every method accepts the parameters listed in the [Faker API docs](https://fakerjs.dev/api/). The plugin reads them from the installed Faker package at build time, so the helpers always match the bundled version. Pass them as `key:value`. Numbers and `true`/`false` are converted automatically.
 
-- `faker date birthdate mode:age min:{n} max:{n}`
-  - Description: Birthdate constrained by age range
-  - Required: `mode:age`, `min`, `max`
-  - Example: `faker date birthdate mode:age min:18 max:65`
-  - Output: Date of birth
+### Copy options
+Press → on a generated value for more options:
+- Copy the current value.
+- Generate and copy 5 or 10 values, comma- or newline-separated.
 
-- `faker date birthdate mode:year min:{n} max:{n}`
-  - Description: Birthdate constrained by year range
-  - Required: `mode:year`, `min`, `max`
-  - Example: `faker date birthdate mode:year min:1990 max:2000`
-  - Output: Synthetic birthdate within year range
+### Examples
+```
+fake person fullName sex:female lang:vi
+fake internet email firstName:Jeanne lastName:Doe
+fake date between from:2002-01-01 to:2002-02-01
+fake date birthdate mode:age min:18 max:65
+fake number int min:1 max:100 repeat:5
+fake lorem words min:3 max:6
+fake finance iban countryCode:DE
+fake phone number style:international
+fake string nanoid length:10
+fake location city lang:ja
+```
 
-### finance
-- `faker finance accountName`
-  - Description: Company-style account name
-  - Example: `faker finance accountName`
-  - Output: Text string
-
-- `faker finance accountNumber length:{n}`
-  - Description: Numeric account number
-  - Optional: `length` (default 8)
-  - Example: `faker finance accountNumber length:12`
-  - Output: Numeric string
-
-- `faker finance creditCardCVV`
-  - Description: Credit card CVV
-  - Output: Numeric string
-
-- `faker finance creditCardNumber`
-  - Description: Credit card number
-  - Optional: `issuer` (uses Faker’s supported card types)
-  - Output: Numeric string
-
-### internet
-- `faker internet displayName first:{firstName} last:{lastName}`
-  - Description: Display name using given names
-  - Optional: `first`, `last`
-  - Example: `faker internet displayName first:John last:Doe`
-  - Output: Text string
-
-- `faker internet domainName`
-  - Description: Domain name
-
-- `faker internet email first:{firstName} last:{lastName}`
-  - Description: Email with optional name parts
-  - Example: `faker internet email first:Jeanne last:Doe`
-
-- `faker internet ipv4`
-  - Description: IPv4 address
-
-- `faker internet ipv6`
-  - Description: IPv6 address
-
-- `faker internet username first:{firstName} last:{lastName}`
-  - Description: Username derived from names
-
-- `faker internet password length:{n}`
-  - Description: Password of given length
-  - Optional: `length` (default 12)
-
-### random
-- `faker random uuid4`
-  - Description: UUID version 4
-  - Output: Lowercase RFC4122 UUID string
-
-- `faker random ean13`
-  - Description: EAN‑13 barcode
-  - Output: 13‑digit numeric string with valid checksum
-
-- `faker random ean8`
-  - Description: EAN‑8 barcode
-  - Output: 8‑digit numeric string with valid checksum
-
-- `faker random imageUrl width:{n} height:{n}`
-  - Description: URL to a placeholder image
-  - Optional: `width`, `height` (random 64–512 if omitted)
-  - Output: URL like `https://picsum.photos/{width}/{height}`
-
-- `faker random image width:{n} height:{n}`
-  - Description: Generates a local PNG and shows it in preview
-  - Optional: `width`, `height` (random 64–512 if omitted)
-  - Output: Absolute file path to the PNG
-
-### vehicle
-- `faker vehicle license`
-  - Description: Vehicle license plate
-  - Output: Realistic plate string (provider or fallback pattern)
-
-- `faker vehicle vin`
-  - Description: Vehicle Identification Number
-  - Output: 17‑character VIN
-
-### location
-- `faker location streetAddress`
-- `faker location state`
-- `faker location city`
-
-### lorem
-- `faker lorem words length:{n}`
-  - Description: Space-separated words
-  - Optional: `length` (default 5)
-
-- `faker lorem slug length:{n}`
-  - Description: Lowercase hyphenated words
-  - Optional: `length` (default 3)
-
-- `faker lorem sentence length:{n}`
-  - Description: Sentence of given word count
-  - Optional: `length` (default 8)
-
-- `faker lorem paragraph length:{n}`
-  - Description: Paragraph of given sentence count
-  - Optional: `length` (default 3)
-
-### person
-- `faker person fullName sex:male|female`
-  - Description: Full name, honoring sex where supported
-
-- `faker person firstName sex:male|female`
-  - Description: First name; when sex not provided, randomizes male/female where available
-
-- `faker person lastName sex:male|female`
-  - Description: Last name honoring sex where supported
-
-- `faker person middleName`
-  - Description: Middle name when available; falls back to localized first names
-
-- `faker person jobTitle`
-  - Description: Job title
-
-- `faker person bio`
-  - Description: Short bio text
-
-- `faker person name first last`
-  - Description: Outputs `lastName firstName` in the current locale
-  - Required: `first last` tokens
-  - Example: `faker person name first last`
-
-- `faker person name last first lang:{language}`
-  - Description: Outputs `lastName firstName` in specified locale; falls back when invalid
-  - Required: `last first` tokens
-  - Optional: `lang:{locale}` (e.g., `vi_VN`)
-
-- `faker person name last middle first lang:{language}`
-  - Description: Outputs ordered triplet using `last`, `middle`, `first` tokens
-  - Required: Three tokens composed of `first|middle|last`
-  - Optional: `lang:{locale}`
-
-### phone
-- `faker phone imei`
-  - Description: IMEI number
-
-- `faker phone number style:human|international|national`
-  - Description: Phone number formatted by style
-  - Optional: `style` (default `human`)
-
-## Troubleshooting
-- Incomplete commands show suggestions, not results. Provide all required tokens/options.
-- Placeholders like `{n}` and `{language}` in suggestions are templates; replace them with real values.
-- `date between` accepts ISO dates and relative tokens. Use `today` or `YYYY-MM-DD`.
-- `name` ignores `lang:{language}` placeholders; uses default locale when invalid.
-- For `faker random image`, if you see `Error: Pillow (PIL) is not installed`, reload the plugin. The plugin bundles Pillow for Python 3.11 under `lib/PIL`.
+### Vietnamese names
+With `lang:vi`, `person fullName` follows Vietnamese order (family name first), e.g. `Phùng Ngọc San`.
 
 ## Development
-- Runtime path setup: `main.py` includes `lib` so dependencies work without user pip install.
-- Build and release:
-  - CI installs dependencies into `lib` and zips project.
-  - Tag is derived from `plugin.json` `Version`.
+Uses [Bun](https://bun.sh) for tests and bundling. The shipped plugin is plain Node.js.
 
-## Testing
-Run unit tests:
 ```
-python -m unittest discover -s tests
+bun install
+bun test
+bun run build
 ```
 
-## Contribution Guidelines
-- Fork, create a feature branch, add tests, and open a pull request.
-- Keep commands and validation consistent with existing patterns.
+- `bun run build` bundles `src/index.ts` and Faker into a single `dist/index.js`, so users need no `npm install`.
+- `src/faker-docs.ts` is a Bun macro. At build time it reads the JSDoc Faker ships in its `.d.ts` files and inlines every method's parameters, hints and descriptions. After upgrading `@faker-js/faker`, rebuild. `tests/faker-docs.test.ts` fails if the new version's layout can no longer be read.
+- `src/index.ts` speaks Flow Launcher's v2 protocol: JSON-RPC 2.0 over stdio, `Content-Length` framed. Writing to stderr crashes the plugin, so it's silenced.
+- `scripts/deploy-local.ps1` builds, copies the plugin into your Flow Launcher plugins folder, and restarts Flow Launcher:
+  ```
+  powershell -ExecutionPolicy Bypass -File .\scripts\deploy-local.ps1
+  ```
+
+Pushing a `v*` tag runs `.github/workflows/release.yml`. It builds, tests, and publishes the zip to GitHub Releases.
 
 ## License
-MIT License
+MIT

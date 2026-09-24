@@ -5,8 +5,8 @@
   "Description": "Generate realistic test data from Flow Launcher using Faker.",
   "Author": "t4nk3rchu",
   "Version": "2.0.0",
-  "Language": "executable",
-  "ExecuteFileName": "bin\\data-faker.exe",
+  "Language": "javascript_v2",
+  "ExecuteFileName": "dist\\index.js",
   "IcoPath": "Images\\app.svg",
   "Website": "https://github.com/t4nk3rchu/Data-Faker-Flow-Launcher-Plugin"
 }

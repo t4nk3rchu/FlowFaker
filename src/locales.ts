@@ -36,32 +36,9 @@ const LOCALE_INSTANCES: Record<string, Faker> = {
   pt_br: fakerPT_BR
 };
 
-export const SUPPORTED_LOCALES: Record<string, string> = {
-  en: "English (US)",
-  vi: "Vietnamese",
-  ja: "Japanese",
-  zh_cn: "Chinese (Simplified)",
-  zh_tw: "Chinese (Traditional)",
-  de: "German",
-  fr: "French",
-  es: "Spanish",
-  ko: "Korean",
-  it: "Italian",
-  ru: "Russian",
-  pt_br: "Portuguese (Brazil)"
-};
-
-export function isSupportedLocale(localeCode: string): boolean {
-  if (!localeCode) return false;
-  return normalizeLocaleKey(localeCode) in LOCALE_INSTANCES;
-}
-
-export function normalizeLocaleKey(localeCode: string): string {
-  return localeCode.toLowerCase().replace("-", "_");
-}
+export const LOCALE_CODES = Object.keys(LOCALE_INSTANCES);
 
 export function getFaker(localeCode?: string): Faker {
   if (!localeCode) return fakerEN;
-  const key = normalizeLocaleKey(localeCode);
-  return LOCALE_INSTANCES[key] ?? fakerEN;
+  return LOCALE_INSTANCES[localeCode.toLowerCase().replace("-", "_")] ?? fakerEN;
 }

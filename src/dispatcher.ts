@@ -1,5 +1,9 @@
 import { getFaker } from "./locales";
-import type { Faker } from "@faker-js/faker";
+import { fakerDocs } from "./faker-docs" with { type: "macro" };
+import type { MethodParamInfo } from "./faker-docs";
+
+// Inlined at bundle time from faker's shipped docs, so it always matches the installed faker version
+const DOCS = fakerDocs();
 
 const EXCLUDED_MODULES = new Set([
   "rawDefinitions",
@@ -10,19 +14,6 @@ const EXCLUDED_MODULES = new Set([
   "defaultRefDate"
 ]);
 
-const LEGACY_ALIASES: Record<string, { module: string; method: string }> = {
-  "random.number": { module: "number", method: "int" },
-  "random.random_int": { module: "number", method: "int" },
-  "random.boolean": { module: "datatype", method: "boolean" },
-  "random.uuid4": { module: "string", method: "uuid" },
-  "random.image": { module: "image", method: "urlPicsumPhotos" },
-  "phone.phone_number": { module: "phone", method: "number" },
-  "person.name": { module: "person", method: "fullName" },
-  "person.fullname": { module: "person", method: "fullName" }
-};
-
-import { METHOD_PARAM_MAP, METHOD_DESCRIPTIONS, type MethodParamInfo } from "./param-metadata";
-
 const DEPRECATED_METHODS = new Set([
   "urlLoremFlickr"
 ]);
@@ -32,11 +23,7 @@ export function toCamelCase(str: string): string {
 }
 
 export function resolveTarget(moduleName: string, methodName: string): { module: string; method: string } {
-  const aliasKey = `${moduleName}.${methodName}`.toLowerCase();
-  return LEGACY_ALIASES[aliasKey] ?? {
-    module: toCamelCase(moduleName),
-    method: toCamelCase(methodName)
-  };
+  return { module: toCamelCase(moduleName), method: toCamelCase(methodName) };
 }
 
 export function getAvailableModules(): string[] {
@@ -66,17 +53,8 @@ export function getModuleMethods(moduleName: string): string[] {
 }
 
 export function getMethodParameters(moduleName: string, methodName: string): MethodParamInfo[] {
-  const normModule = toCamelCase(moduleName);
-  const normMethod = toCamelCase(methodName);
-  const key = `${normModule}.${normMethod}`;
-  return METHOD_PARAM_MAP[key] ?? [];
-}
-
-export function getMethodDescription(moduleName: string, methodName: string): string {
-  const normModule = toCamelCase(moduleName);
-  const normMethod = toCamelCase(methodName);
-  const key = `${normModule}.${normMethod}`;
-  return METHOD_DESCRIPTIONS[key] ?? `Generate ${moduleName} ${methodName} data`;
+  const t = resolveTarget(moduleName, methodName);
+  return DOCS.params[`${t.module}.${t.method}`] ?? [];
 }
 
 export function executeFaker(
@@ -109,49 +87,16 @@ export function executeFaker(
     throw new Error(`Method '${methodName}' not found on module '${moduleName}'.`);
   }
 
-  // Positional and shape adapters for specialized Faker methods
-  if (target.module === "lorem") {
-    if (target.method === "lines") {
-      if (kwargs.min !== undefined || kwargs.max !== undefined) {
-        return mod.lines({ min: kwargs.min ?? 1, max: kwargs.max ?? 5 });
-      }
-      if (kwargs.lineCount !== undefined || kwargs.count !== undefined) {
-        return mod.lines(Number(kwargs.lineCount ?? kwargs.count));
-      }
-    } else if (target.method === "words") {
-      if (kwargs.min !== undefined || kwargs.max !== undefined) {
-        return mod.words({ min: kwargs.min ?? 1, max: kwargs.max ?? 5 });
-      }
-      if (kwargs.wordCount !== undefined || kwargs.count !== undefined || kwargs.num !== undefined) {
-        return mod.words(Number(kwargs.wordCount ?? kwargs.count ?? kwargs.num));
-      }
-    } else if (target.method === "sentence") {
-      if (kwargs.wordCount !== undefined || kwargs.count !== undefined) {
-        return mod.sentence(Number(kwargs.wordCount ?? kwargs.count));
-      }
-    } else if (target.method === "sentences") {
-      const count = kwargs.sentenceCount ?? kwargs.count;
-      return mod.sentences(count !== undefined ? Number(count) : undefined, kwargs.separator);
-    } else if (target.method === "paragraph") {
-      if (kwargs.sentenceCount !== undefined || kwargs.count !== undefined) {
-        return mod.paragraph(Number(kwargs.sentenceCount ?? kwargs.count));
-      }
-    } else if (target.method === "paragraphs") {
-      const count = kwargs.paragraphCount ?? kwargs.count;
-      return mod.paragraphs(count !== undefined ? Number(count) : undefined, kwargs.separator);
-    } else if (target.method === "slug") {
-      if (kwargs.wordCount !== undefined || kwargs.count !== undefined) {
-        return mod.slug(Number(kwargs.wordCount ?? kwargs.count));
-      }
-    }
-  }
+  if (Object.keys(kwargs).length === 0) return fn.call(mod);
 
-  if (target.module === "phone" && target.method === "number") {
-    if (kwargs.format) {
-      return mod.number(kwargs.format);
-    }
+  // Positional-signature methods (e.g. lorem.words(wordCount), person.firstName(sex)): pass kwargs in order.
+  // `min:`/`max:` fill a range for the first argument (e.g. lorem.words({ min, max })).
+  const positional = DOCS.positional[`${target.module}.${target.method}`];
+  if (positional) {
+    const range = kwargs.min !== undefined || kwargs.max !== undefined
+      ? { min: kwargs.min ?? kwargs.max, max: kwargs.max ?? kwargs.min }
+      : undefined;
+    return fn.apply(mod, positional.map((k, i) => kwargs[k] ?? (i === 0 ? range : undefined)));
   }
-
-  const hasArgs = Object.keys(kwargs).length > 0;
-  return hasArgs ? fn.call(mod, kwargs) : fn.call(mod);
+  return fn.call(mod, kwargs);
 }

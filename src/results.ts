@@ -1,15 +1,30 @@
 import type { FlowResult } from "./types";
 import type { ParsedQuery } from "./parser";
+import { LOCALE_CODES } from "./locales";
 import {
   executeFaker,
   getAvailableModules,
   getMethodParameters,
-  getMethodDescription,
   getModuleMethods,
   resolveTarget
 } from "./dispatcher";
 
 const ICON_PATH = "Images\\app.svg";
+
+const GLOBAL_OPTIONS = [
+  { key: "repeat", hint: "repeat:<n>", desc: "Generate multiple items (e.g. repeat:5)" },
+  { key: "newline", hint: "newline:<true|false>", desc: "Separate repeated items with newlines" },
+  { key: "locale", hint: `locale:<${LOCALE_CODES.join("|")}>`, desc: "Locale override (e.g. locale:vi, locale:ja)" }
+];
+
+// Hints that name a type rather than listing the accepted values
+const TYPE_PLACEHOLDERS = new Set(["<n>", "<date>", "<string>", "<value>"]);
+
+// Dates render as ISO strings; JSON.stringify would wrap them in quotes
+function formatValue(v: unknown): string {
+  if (v instanceof Date) return v.toISOString();
+  return typeof v === "object" ? JSON.stringify(v) : String(v);
+}
 
 export function generateResults(q: ParsedQuery): FlowResult[] {
   const { moduleName, methodName, options, hasTrailingSpace } = q;
@@ -50,13 +65,19 @@ export function generateResults(q: ParsedQuery): FlowResult[] {
 
   const resolvedMethod = matchedMethods[0] ?? target.method;
 
-  // 3. User typed an uncompleted option filter (e.g. "fake person fullName s"):
-  // Show ONLY matching syntax helper cards!
-  if (q.optionFilter) {
+  // 3. Trailing space after the method, or a partial option (e.g. "fake person fullName s"):
+  // Show ONLY syntax helper cards, no generated data
+  if (q.optionFilter || hasTrailingSpace) {
     return buildSyntaxHelpers(target.module, resolvedMethod, q.raw, q.optionFilter);
   }
 
-  // 4. Method chosen and no option filter -> Generate 5 distinct data instances followed by available parameter helpers
+  // 4. Typing a parameter value (e.g. "fake date birthdate mode:"): show the accepted values instead
+  const valueHelpers = buildValueHelpers(target.module, resolvedMethod, q.raw);
+  if (valueHelpers) {
+    return valueHelpers;
+  }
+
+  // 5. Method chosen, no trailing space -> Generate 5 distinct data instances
   try {
     const results: FlowResult[] = [];
     const INSTANCE_COUNT = 5;
@@ -65,7 +86,7 @@ export function generateResults(q: ParsedQuery): FlowResult[] {
       const generatedValues: string[] = [];
       for (let i = 0; i < options.repeat; i++) {
         const val = executeFaker(target.module, resolvedMethod, options.kwargs, options.locale);
-        const strVal = typeof val === "object" ? JSON.stringify(val) : String(val);
+        const strVal = formatValue(val);
         generatedValues.push(strVal);
       }
 
@@ -92,9 +113,6 @@ export function generateResults(q: ParsedQuery): FlowResult[] {
         }
       });
     }
-
-    // Append syntax helpers so the user sees all available options
-    results.push(...buildSyntaxHelpers(target.module, resolvedMethod, q.raw));
 
     return results;
   } catch (err: any) {
@@ -145,17 +163,16 @@ function listMethods(moduleName: string, filter: string): FlowResult[] {
     let samplePreview = "";
     try {
       const v = executeFaker(moduleName, m);
-      const rawStr = typeof v === "object" ? JSON.stringify(v) : String(v);
+      const rawStr = formatValue(v);
       const clean = rawStr.replace(/[\r\n]+/g, " ").trim();
       samplePreview = clean.length > 70 ? clean.slice(0, 67) + "..." : clean;
     } catch {
       samplePreview = "";
     }
 
-    const description = getMethodDescription(moduleName, m);
     const subTitle = samplePreview
       ? `Sample: ${samplePreview} | Press Tab to select`
-      : `${description} | Press Tab to select`;
+      : `Generate ${moduleName} ${m} data | Press Tab to select`;
 
     return {
       Title: `${moduleName}.${m}`,
@@ -195,7 +212,7 @@ function buildSyntaxHelpers(
       continue;
     }
     helpers.push({
-      Title: keyWithColon,
+      Title: `${keyWithColon}  [method]`,
       SubTitle: `${param.hint}${param.desc ? ` - ${param.desc}` : ""} | Press Tab/Enter to add`,
       IcoPath: ICON_PATH,
       AutoCompleteText: `${baseQuery}${keyWithColon}`,
@@ -208,28 +225,82 @@ function buildSyntaxHelpers(
   }
 
   // Global options
-  const globalOptions = [
-    { key: "repeat:", hint: "repeat:<n>", desc: "Generate multiple items (e.g. repeat:5)" },
-    { key: "newline:", hint: "newline:<true|false>", desc: "Separate repeated items with newlines" },
-    { key: "locale:", hint: "locale:<code>", desc: "Locale override (e.g. locale:vi, locale:ja)" }
-  ].filter((opt) => !rawLower.includes(opt.key) && (opt.key !== "locale:" || !rawLower.includes("lang:")));
+  const globalOptions = GLOBAL_OPTIONS.filter(
+    (opt) => !rawLower.includes(`${opt.key}:`) && (opt.key !== "locale" || !rawLower.includes("lang:"))
+  );
 
   for (const opt of globalOptions) {
-    if (filterLower && !opt.key.toLowerCase().startsWith(filterLower)) continue;
+    const keyWithColon = `${opt.key}:`;
+    if (filterLower && !keyWithColon.startsWith(filterLower)) continue;
     helpers.push({
-      Title: opt.key,
+      Title: `${keyWithColon}  [global]`,
       SubTitle: `${opt.hint} - ${opt.desc} | Press Tab/Enter to add`,
       IcoPath: ICON_PATH,
-      AutoCompleteText: `${baseQuery}${opt.key}`,
+      AutoCompleteText: `${baseQuery}${keyWithColon}`,
       JsonRPCAction: {
         method: "Flow.Launcher.ChangeQuery",
-        parameters: [`${baseQuery}${opt.key}`, true],
+        parameters: [`${baseQuery}${keyWithColon}`, true],
         dontHideAfterAction: true
       }
     });
   }
 
   return helpers;
+}
+
+// Last token is `key:` or `key:partial`: list the values that key accepts. The selected card's
+// QuerySuggestionText is drawn by Flow as ghost text after the cursor, e.g. "fake date birthdate mode:age|year".
+function buildValueHelpers(moduleName: string, methodName: string, rawQuery: string): FlowResult[] | undefined {
+  const m = /(?:^|\s)(\w+):(\S*)$/.exec(rawQuery);
+  if (!m) return undefined;
+  const [, key, typed] = m;
+
+  const optKey = key === "lang" ? "locale" : key;
+  const param =
+    GLOBAL_OPTIONS.find((o) => o.key === optKey) ??
+    getMethodParameters(moduleName, methodName).find((p) => p.key === key);
+  if (!param) return undefined;
+
+  const accepts = param.hint.slice(param.key.length + 1).replace("<bool>", "<true|false>");
+  const desc = param.desc ? ` - ${param.desc}` : "";
+  const prefix = rawQuery.slice(0, rawQuery.length - typed.length); // "date birthdate mode:"
+  const changeQuery = (query: string) => ({
+    method: "Flow.Launcher.ChangeQuery",
+    parameters: [query, true],
+    dontHideAfterAction: true
+  });
+
+  // Free-form value (<n>, <date>, ...): hint until the user starts typing, then generate
+  if (TYPE_PLACEHOLDERS.has(accepts)) {
+    if (typed) return undefined;
+    return [
+      {
+        Title: `${key}:${accepts}`,
+        SubTitle: `Type a value${desc}`,
+        IcoPath: ICON_PATH,
+        AutoCompleteText: `fake ${prefix}`,
+        QuerySuggestionText: `${prefix}${accepts}`,
+        JsonRPCAction: changeQuery(`fake ${prefix}`)
+      }
+    ];
+  }
+
+  const options = accepts.slice(1, -1).split("|");
+  const typedLower = typed.toLowerCase();
+  if (options.some((o) => o.toLowerCase() === typedLower)) return undefined; // complete value: generate
+  const matching = options.filter((o) => o.toLowerCase().startsWith(typedLower));
+  if (matching.length === 0) return undefined;
+
+  return matching.map((o, i) => ({
+    Title: `${key}:${o}`,
+    SubTitle: `Accepts ${options.join(" | ")}${desc} | Press Tab/Enter to use`,
+    IcoPath: ICON_PATH,
+    AutoCompleteText: `fake ${prefix}${o}`,
+    // The first card is selected by default, so it ghosts every match; the rest ghost their own value
+    QuerySuggestionText: `${prefix}${i === 0 ? matching.join("|") : o}`,
+    // Enter adds a trailing space so the next parameter helpers show up
+    JsonRPCAction: changeQuery(`fake ${prefix}${o} `)
+  }));
 }
 
 export function generateContextMenu(contextData: any): FlowResult[] {
@@ -242,7 +313,7 @@ export function generateContextMenu(contextData: any): FlowResult[] {
       const items: string[] = [];
       for (let i = 0; i < count; i++) {
         const v = executeFaker(module, method, kwargs, locale);
-        items.push(typeof v === "object" ? JSON.stringify(v) : String(v));
+        items.push(formatValue(v));
       }
       text = items.join(newline ? "\n" : ", ");
     } catch {

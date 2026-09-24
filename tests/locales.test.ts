@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { getFaker, isSupportedLocale } from "../src/locales";
+import { getFaker } from "../src/locales";
 
 test("resolves default en locale when omitted or unrecognized", () => {
   const defaultFaker = getFaker();
@@ -10,9 +10,9 @@ test("resolves default en locale when omitted or unrecognized", () => {
 });
 
 test("resolves specific locales correctly", () => {
-  expect(isSupportedLocale("vi")).toBe(true);
-  expect(isSupportedLocale("ja")).toBe(true);
-  expect(isSupportedLocale("de")).toBe(true);
+  for (const code of ["vi", "ja", "de", "pt-BR"]) {
+    expect(getFaker(code)).not.toBe(getFaker());
+  }
 
   const viFaker = getFaker("vi");
   expect(viFaker).toBeDefined();
