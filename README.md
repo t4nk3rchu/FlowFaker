@@ -67,7 +67,7 @@ bun test
 bun run build
 ```
 
-- `bun run build` bundles `src/index.ts` and Faker into a single `dist/index.js`, so users need no `npm install`.
+- `bun run build` bundles `src/index.ts` and Faker into a single `dist/index.js`, so users need no `npm install`. It also copies Faker's license to `dist/FAKER-LICENSE.txt`.
 - `src/faker-docs.ts` is a Bun macro. At build time it reads the JSDoc Faker ships in its `.d.ts` files and inlines every method's parameters, hints and descriptions. After upgrading `@faker-js/faker`, rebuild. `tests/faker-docs.test.ts` fails if the new version's layout can no longer be read.
 - `src/index.ts` speaks Flow Launcher's v2 protocol: JSON-RPC 2.0 over stdio, `Content-Length` framed. Writing to stderr crashes the plugin, so it's silenced.
 - `scripts/deploy-local.ps1` builds, copies the plugin into your Flow Launcher plugins folder, and restarts Flow Launcher:
@@ -76,6 +76,13 @@ bun run build
   ```
 
 Pushing a `v*` tag runs `.github/workflows/release.yml`. It builds, tests, and publishes the zip to GitHub Releases.
+
+## Credits
+All data generation comes from [Faker](https://fakerjs.dev) ([`@faker-js/faker`](https://github.com/faker-js/faker)), built and maintained by the Faker.js team and its contributors. The parameter hints and descriptions shown in the plugin are taken from Faker's own API documentation. Thank you for a wonderful library.
+
+Faker is MIT-licensed. Its license ships with the plugin as `dist/FAKER-LICENSE.txt`.
+
+This plugin is an independent project. It is **not affiliated with, endorsed by, or sponsored by** the Faker.js project. "Faker" is used only to describe the library the plugin is built on, and the plugin uses its own icon, not Faker's logo.
 
 ## License
 MIT
