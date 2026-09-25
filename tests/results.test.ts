@@ -104,3 +104,11 @@ test("dates are rendered without JSON quotes", () => {
   const res = generateResults(parseQuery("date between from:2002-01-01 to:2002-02-01"));
   expect(res[0].Title).toMatch(/^2002-0[12]-\d\dT[\d:.]+Z$/);
 });
+
+test("method cards show the bare method name and ghost 'module method' (no dot)", () => {
+  const res = generateResults(parseQuery("string "));
+  expect(res[0].Title).toBe("alpha");
+  expect(res[0].QuerySuggestionText).toBe("string alpha");
+  expect(res.every((r) => !r.Title.includes("."))).toBe(true);
+  expect(generateResults(parseQuery("string alph"))[1].QuerySuggestionText).toBe("string alphanumeric");
+});

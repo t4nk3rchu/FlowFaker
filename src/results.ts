@@ -177,10 +177,13 @@ function listMethods(moduleName: string, filter: string): FlowResult[] {
       : `Generate ${moduleName} ${m} data | Press Tab to select`;
 
     return {
-      Title: `${moduleName}.${m}`,
+      // Just the method name: "string.alpha" made people type the dot
+      Title: m,
       SubTitle: subTitle,
       IcoPath: ICON_PATH,
       AutoCompleteText: `fake ${moduleName} ${m}`,
+      // Ghost text in the query box ("fake string alpha"); Flow falls back to the Title otherwise
+      QuerySuggestionText: `${moduleName} ${m}`,
       JsonRPCAction: {
         method: "Flow.Launcher.ChangeQuery",
         parameters: [`fake ${moduleName} ${m}`, true],
