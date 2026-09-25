@@ -26,7 +26,7 @@ function safeResults(build: () => FlowResult[]) {
   } catch (err: any) {
     return {
       result: [
-        { Title: "Data Faker Error", SubTitle: err?.message || "Failed to process request", IcoPath: "Images\\app.svg" }
+        { Title: "FlowFaker Error", SubTitle: err?.message || "Failed to process request", IcoPath: "Images\\app.png" }
       ]
     };
   }

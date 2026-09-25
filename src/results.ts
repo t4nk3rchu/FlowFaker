@@ -9,7 +9,7 @@ import {
   resolveTarget
 } from "./dispatcher";
 
-const ICON_PATH = "Images\\app.svg";
+const ICON_PATH = "Images\\app.png";
 
 const GLOBAL_OPTIONS = [
   { key: "repeat", hint: "repeat:<n>", desc: "Generate multiple items (e.g. repeat:5)" },
