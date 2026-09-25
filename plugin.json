@@ -4,9 +4,9 @@
   "Name": "FlowFaker",
   "Description": "Flow Launcher plugin using FakerJS to generate fake data",
   "Author": "t4nk3rchu",
-  "Version": "1.0.2",
-  "Language": "javascript",
+  "Version": "2.0.0",
+  "Language": "javascript_v2",
   "Website": "https://github.com/t4nk3rchu/FlowFaker",
-  "ExecuteFileName": "main.js",
-  "IcoPath": "Images\\app.png"
+  "ExecuteFileName": "dist\\index.js",
+  "IcoPath": "Images\\app.svg"
 }

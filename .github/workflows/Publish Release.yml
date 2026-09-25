@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [ main ]
-    paths-ignore: 
+    paths-ignore:
       - '.github/workflows/**'
 
 jobs:
@@ -15,23 +15,33 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # e2e tests run the built bundle under Node, the runtime Flow Launcher uses
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: lts/*
 
       - name: Get version
         id: version
         uses: notiz-dev/github-action-json-property@release
-        with: 
+        with:
           path: 'plugin.json'
           prop_path: 'Version'
 
-      - name: Install dependencies and build
+      - name: Install, build and test
         run: |
-          npm install
-          npm run build
-          zip -r Flow.Launcher.Plugin.FakerJS.zip . -x '*.git*'
+          bun install --frozen-lockfile
+          bun run build
+          bun test
+
+      # Asset name must stay the same: the Flow Launcher plugin store downloads it by this name
+      - name: Package
+        run: zip -r Flow.Launcher.Plugin.FakerJS.zip dist Images plugin.json
 
       - name: Publish Release
         uses: softprops/action-gh-release@v2

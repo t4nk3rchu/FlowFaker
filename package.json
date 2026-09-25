@@ -1,18 +1,16 @@
 {
   "name": "flowfaker",
-  "version": "1.0.2",
   "type": "module",
+  "private": true,
   "scripts": {
-    "build": "tsc && node generate_metadata.js"
-  },
-  "dependencies": {
-    "clipboardy": "^2.3.0",
-    "open": "^8.4.0"
+    "test": "bun test",
+    "build": "bun build --target=node --minify ./src/index.ts --outfile ./dist/index.js && cp node_modules/@faker-js/faker/LICENSE dist/FAKER-LICENSE.txt"
   },
   "devDependencies": {
-    "@faker-js/faker": "^10.1.0",
-    "@types/node": "^20.0.0",
-    "typescript": "^5.3.0"
+    "@types/bun": "^1.4.2"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.6.0"
   },
   "repository": {
     "type": "git",
