@@ -88,7 +88,7 @@ bun run build
   ```
 
 ### Releasing
-Every push to `main` runs `.github/workflows/Publish Release.yml`. It builds, tests, and publishes `Flow.Launcher.Plugin.FakerJS.zip` to a release tagged `v<Version>` from `plugin.json`. **Bump `Version` in `plugin.json` before pushing** a change you want users to get; pushing without a bump updates the existing release. Keep the zip name unchanged, because the Flow Launcher plugin store downloads it by that name.
+Every push to `main` runs `.github/workflows/Publish Release.yml`. It builds, tests, and publishes `Flow.Launcher.Plugin.FakerJS.zip` to a release tagged `v<Version>` from `plugin.json`. **Bump `Version` in `plugin.json` before pushing** a change you want users to get; pushing without a bump updates the existing release. Update `RELEASE_NOTES.md` too: it becomes the release's notes. Keep the zip name unchanged, because the Flow Launcher plugin store downloads it by that name.
 
 ## Credits
 All data generation comes from [Faker](https://fakerjs.dev) ([`@faker-js/faker`](https://github.com/faker-js/faker)), built and maintained by the Faker.js team and its contributors. The parameter hints and descriptions shown in the plugin are taken from Faker's own API documentation. Thank you for a wonderful library.
@@ -98,4 +98,4 @@ Faker is MIT-licensed. Its license ships with the plugin as `dist/FAKER-LICENSE.
 FlowFaker is an independent project. It is **not affiliated with, endorsed by, or sponsored by** the Faker.js project. "Faker" is used only to describe the library the plugin is built on, and the plugin uses its own icon, not Faker's logo.
 
 ## License
-MIT
+[MIT](LICENSE) © 2025-2026 t4nk3rchu

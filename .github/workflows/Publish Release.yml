@@ -41,12 +41,13 @@ jobs:
 
       # Asset name must stay the same: the Flow Launcher plugin store downloads it by this name
       - name: Package
-        run: zip -r Flow.Launcher.Plugin.FakerJS.zip dist Images plugin.json
+        run: zip -r Flow.Launcher.Plugin.FakerJS.zip dist Images plugin.json LICENSE
 
       - name: Publish Release
         uses: softprops/action-gh-release@v2
         with:
           files: 'Flow.Launcher.Plugin.FakerJS.zip'
           tag_name: "v${{ steps.version.outputs.prop }}"
+          body_path: RELEASE_NOTES.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
